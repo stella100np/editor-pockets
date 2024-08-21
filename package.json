@@ -1,0 +1,112 @@
+{
+	"name": "filelogger",
+	"displayName": "filelogger",
+	"description": "",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.92.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [],
+	"main": "./out/extension.js",
+	"contributes": {
+		"views": {
+			"explorer": [
+				{
+					"id": "myTreeView",
+					"name": "myTreeView"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "myTreeView",
+				"contents": "[Add Pocket](command:extension.addEntry)"
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "extension.saveTabsToPocket"
+				}
+			],
+			"view/title": [
+				{
+					"command": "extension.addEntry",
+					"when": "view == myTreeView",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "extension.removeCompartments",
+				   "group": "inline",
+					"when": "view == myTreeView && viewItem == pocket"
+				},
+				{
+					"command": "extension.openPocket",
+				   "group": "inline",
+					"when": "view == myTreeView && viewItem == pocket"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "extension.showOpenFilePaths",
+				"title": "Show Open File Paths in Active Group"
+			},
+			{
+				"command": "extension.saveTabsToPocket",
+				"title": "Save tabs to pocket..."
+			},
+			{
+				"command": "extension.addEntry",
+				"title": "add a Pocket",
+				"icon": {
+					"light": "resources/light/add.svg",
+					"dark": "resources/dark/add.svg"
+				}
+			},
+			{
+				"command": "extension.removeCompartments",
+				"title": "Delete",
+				"icon": {
+					"light": "resources/light/trash.svg",
+					"dark": "resources/dark/trash.svg"
+				}
+			},
+			{
+				"command": "extension.openPocket",
+				"title": "Open Pocket",
+				"icon": {
+					"light": "resources/light/open.svg",
+					"dark": "resources/dark/open.svg"
+				}
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "pnpm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "pnpm run compile && pnpm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.7",
+		"@types/node": "20.x",
+		"@types/vscode": "^1.92.0",
+		"@typescript-eslint/eslint-plugin": "^7.14.1",
+		"@typescript-eslint/parser": "^7.11.0",
+		"@vscode/test-cli": "^0.0.9",
+		"@vscode/test-electron": "^2.4.0",
+		"eslint": "^8.57.0",
+		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"@biomejs/biome": "^1.8.3"
+	}
+}
