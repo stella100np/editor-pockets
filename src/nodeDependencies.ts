@@ -6,6 +6,7 @@ enum ContextValue {
 	COMPARTMENT = "compartment",
 	DOCUMENT = "document",
 }
+const WORKSPACESTATE_KEY = "editorpocketstorage";
 
 export class MyTreeNode extends vscode.TreeItem {
 	public children: MyTreeNode[] = [];
@@ -45,6 +46,14 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		new vscode.EventEmitter<MyTreeNode | undefined>();
 	readonly onDidChangeTreeData: vscode.Event<MyTreeNode | undefined> =
 		this._onDidChangeTreeData.event;
+	private _workspaceState: vscode.Memento;
+	constructor(
+		workspaceState: vscode.Memento
+	) {
+		this._workspaceState = workspaceState
+		this.treeData = this._workspaceState.get(WORKSPACESTATE_KEY, [])
+	}
+
 	getPockets() {
 		return this.treeData;
 	}
@@ -62,7 +71,10 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 	}
 
 	refresh() {
+		// 更新数据
 		this._onDidChangeTreeData.fire(undefined);
+		// 存储数据
+		this._workspaceState.update(WORKSPACESTATE_KEY, this.treeData)
 	}
 
 	async addEntry() {
