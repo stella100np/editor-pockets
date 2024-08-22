@@ -31,7 +31,7 @@ async function openFilesInGroup(
 				// 将文件路径转换为URI
 				const uri = vscode.Uri.file(filePath);
 				// 使用指定的编辑器组打开文件
-				await vscode.window.showTextDocument(uri, { viewColumn: group });
+				await vscode.window.showTextDocument(uri, { viewColumn: group, preview: false });
 			} catch (error) {
 				console.error(`Failed to open file ${filePath}:`, error);
 			}
