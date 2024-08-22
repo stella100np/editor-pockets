@@ -11,12 +11,16 @@ const WORKSPACESTATE_KEY = "editorpocketstorage";
 export class MyTreeNode extends vscode.TreeItem {
 	public children: MyTreeNode[] = [];
 	constructor(
-		public readonly label: string,
+		public label: string,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
 		public ctxValue: ContextValue,
 	) {
 		super(label, collapsibleState);
 		this.contextValue = ctxValue;
+	}
+
+	setLabel(label: string) {
+		this.label = label;
 	}
 }
 
@@ -174,5 +178,18 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			targetGroup = vscode.ViewColumn.Beside;
 		}
 		vscode.window.showInformationMessage("All files opened successfully.");
+	}
+	renamePocket(node: MyTreeNode) {
+		vscode.window
+			.showInputBox({
+				value: node.label,
+				placeHolder: "请输入新名称",
+			})
+			.then((newName) => {
+				if (newName) {
+					node.setLabel(newName);
+					this.refresh();
+				}
+			});
 	}
 }

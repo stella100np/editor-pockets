@@ -47,10 +47,19 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand("extension.saveTabsToPocket", () =>
 		treeProvider.beforeAddTabs(),
 	);
+
+	// 重命名口袋
 	vscode.commands.registerCommand(
-		"extension.removeCompartments",
+		"extension.renamePocket",
+		(node: MyTreeNode) => treeProvider.renamePocket(node),
+	);
+
+	// 删除口袋
+	vscode.commands.registerCommand(
+		"extension.removePocket",
 		(node: MyTreeNode) => treeProvider.removeCompartments(node),
 	);
+
 	vscode.commands.registerCommand("extension.openPocket", (node: MyTreeNode) =>
 		treeProvider.openPocket(node),
 	);

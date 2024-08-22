@@ -1,7 +1,8 @@
 {
-	"name": "filelogger",
-	"displayName": "filelogger",
-	"description": "",
+	"publisher": "shimarindelta",
+	"name": "editor-pockets",
+	"displayName": "editorPockets",
+	"description": "editorPockets",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.92.0"
@@ -41,13 +42,18 @@
 			],
 			"view/item/context": [
 				{
-					"command": "extension.removeCompartments",
-				   "group": "inline",
+					"command": "extension.renamePocket",
+					"group": "inline",
 					"when": "view == myTreeView && viewItem == pocket"
 				},
 				{
 					"command": "extension.openPocket",
-				   "group": "inline",
+					"group": "inline",
+					"when": "view == myTreeView && viewItem == pocket"
+				},
+				{
+					"command": "extension.removePocket",
+					"group": "inline",
 					"when": "view == myTreeView && viewItem == pocket"
 				}
 			]
@@ -70,7 +76,15 @@
 				}
 			},
 			{
-				"command": "extension.removeCompartments",
+				"command": "extension.renamePocket",
+				"title": "Rename",
+				"icon": {
+					"light": "resources/light/rename.svg",
+					"dark": "resources/dark/rename.svg"
+				}
+			},
+			{
+				"command": "extension.removePocket",
 				"title": "Delete",
 				"icon": {
 					"light": "resources/light/trash.svg",
@@ -108,5 +122,8 @@
 	},
 	"dependencies": {
 		"@biomejs/biome": "^1.8.3"
+	},
+	"volta": {
+		"node": "20.16.0"
 	}
 }
