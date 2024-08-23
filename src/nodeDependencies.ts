@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import type {  GitExtension } from "./git";
 
 // contextValue枚举
 enum ContextValue {
@@ -10,6 +11,7 @@ const WORKSPACESTATE_KEY = "editorpocketstorage";
 
 export class MyTreeNode extends vscode.TreeItem {
 	public children: MyTreeNode[] = [];
+	public alias = "";
 	constructor(
 		public label: string,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
@@ -17,10 +19,6 @@ export class MyTreeNode extends vscode.TreeItem {
 	) {
 		super(label, collapsibleState);
 		this.contextValue = ctxValue;
-	}
-
-	setLabel(label: string) {
-		this.label = label;
 	}
 }
 
@@ -61,7 +59,6 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 	getPockets() {
 		return this.treeData;
 	}
-	// 初始化时，自动watch并刷新
 
 	getTreeItem(element: MyTreeNode): vscode.TreeItem {
 		return element;
@@ -187,9 +184,31 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			})
 			.then((newName) => {
 				if (newName) {
-					node.setLabel(newName);
+					node.label = newName;
+					if (node.ctxValue === ContextValue.DOCUMENT) {
+						node.alias = newName
+					}
 					this.refresh();
 				}
 			});
+	}
+	async linkGitBranch(node: MyTreeNode) {
+		const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')?.exports;
+		const git = gitExtension?.getAPI(1);
+		if (vscode.workspace.workspaceFolders) {
+			const repo = git?.getRepository(vscode.workspace.workspaceFolders[0].uri)
+			if (repo) {
+				const branches = await repo.getBranches({
+					remote: true
+				})
+				const branchesName = branches.map(v => v.name).filter( v=> v!==undefined)
+				const targetBranchName =  await vscode.window.showQuickPick(branchesName, { placeHolder: "选择分支" })
+				if (targetBranchName) {
+					node.description = targetBranchName
+					this.refresh()
+				}
+				// console.log(repo.state.HEAD?.name, repo.state.HEAD?.remote)
+			}
+		}
 	}
 }

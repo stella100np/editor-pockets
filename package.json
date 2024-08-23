@@ -44,7 +44,7 @@
 				{
 					"command": "extension.renamePocket",
 					"group": "inline",
-					"when": "view == myTreeView && viewItem == pocket"
+					"when": "view == myTreeView"
 				},
 				{
 					"command": "extension.openPocket",
@@ -53,6 +53,11 @@
 				},
 				{
 					"command": "extension.removePocket",
+					"group": "inline",
+					"when": "view == myTreeView && viewItem == pocket"
+				},
+				{
+					"command": "extension.branchLink",
 					"group": "inline",
 					"when": "view == myTreeView && viewItem == pocket"
 				}
@@ -98,6 +103,14 @@
 					"light": "resources/light/open.svg",
 					"dark": "resources/dark/open.svg"
 				}
+			},
+			{
+				"command": "extension.branchLink",
+				"title": "link a branch...",
+				"icon": {
+					"light": "resources/light/branch-plus.svg",
+					"dark": "resources/dark/branch-plus.svg"
+				}
 			}
 		]
 	},
@@ -120,6 +133,9 @@
 		"eslint": "^8.57.0",
 		"typescript": "^5.4.5"
 	},
+	"extensionDependencies": [
+		"vscode.git"
+	],
 	"dependencies": {
 		"@biomejs/biome": "^1.8.3"
 	},

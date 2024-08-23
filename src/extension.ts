@@ -64,5 +64,7 @@ export function activate(context: vscode.ExtensionContext) {
 		treeProvider.openPocket(node),
 	);
 
+	vscode.commands.registerCommand("extension.branchLink", (node: MyTreeNode) => treeProvider.linkGitBranch(node))
+
 	context.subscriptions.push(disposable);
 }

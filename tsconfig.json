@@ -8,10 +8,15 @@
 		],
 		"sourceMap": true,
 		"rootDir": "src",
-		"strict": true   /* enable all strict type-checking options */
+		"strict": true /* enable all strict type-checking options */
 		/* Additional Checks */
 		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
 		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
 		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
-	}
+	},
+	"include": [
+		"*.ts", // 包含根目录下的所有.ts文件
+		"src/**/*.ts", // 包含src目录下的所有.ts文件及其子目录中的.ts文件
+		"test/*.ts" // 包含test目录下的所有.ts文件
+	]
 }
