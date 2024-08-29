@@ -42,32 +42,32 @@
 			],
 			"view/item/context": [
 				{
-					"command": "extension.renamePocket",
-					"group": "inline",
-					"when": "view == myTreeView"
+					"command": "extension.openPocket",
+					"group": "inline@1",
+					"when": "view == myTreeView && viewItem == pocket"
 				},
 				{
-					"command": "extension.openPocket",
-					"group": "inline",
+					"command": "extension.renamePocket",
+					"group": "inline@2",
 					"when": "view == myTreeView && viewItem == pocket"
 				},
 				{
 					"command": "extension.removePocket",
-					"group": "inline",
+					"group": "inline@3",
 					"when": "view == myTreeView && viewItem == pocket"
 				},
 				{
-					"command": "extension.branchLink",
-					"group": "inline",
-					"when": "view == myTreeView && viewItem == pocket"
+					"command": "extension.linkBranch",
+					"group": "inline@4",
+					"when": "view == myTreeView && viewItem == pocket && gitOpenRepositoryCount >= 1"
+				},
+				{
+					"command": "extension.unlinkBranch",
+					"when": "view == myTreeView && viewItem == pocket "
 				}
 			]
 		},
 		"commands": [
-			{
-				"command": "extension.showOpenFilePaths",
-				"title": "Show Open File Paths in Active Group"
-			},
 			{
 				"command": "extension.saveTabsToPocket",
 				"title": "Save tabs to pocket..."
@@ -98,18 +98,26 @@
 			},
 			{
 				"command": "extension.openPocket",
-				"title": "Open Pocket",
+				"title": "Open",
 				"icon": {
 					"light": "resources/light/open.svg",
 					"dark": "resources/dark/open.svg"
 				}
 			},
 			{
-				"command": "extension.branchLink",
-				"title": "link a branch...",
+				"command": "extension.linkBranch",
+				"title": "Related to a branch...",
 				"icon": {
 					"light": "resources/light/branch-plus.svg",
 					"dark": "resources/dark/branch-plus.svg"
+				}
+			},
+			{
+				"command": "extension.unlinkBranch",
+				"title": "Unlink branch",
+				"icon": {
+					"light": "resources/light/branch-minus.svg",
+					"dark": "resources/dark/branch-minus.svg"
 				}
 			}
 		]
