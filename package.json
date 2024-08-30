@@ -3,9 +3,9 @@
 	"name": "editor-pockets",
 	"displayName": "editorPockets",
 	"description": "editorPockets",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
-		"vscode": "^1.92.0"
+		"vscode": "^1.75.0"
 	},
 	"categories": [
 		"Other"
@@ -133,20 +133,19 @@
 	"devDependencies": {
 		"@types/mocha": "^10.0.7",
 		"@types/node": "20.x",
-		"@types/vscode": "^1.92.0",
+		"@types/vscode": "^1.75.0",
 		"@typescript-eslint/eslint-plugin": "^7.14.1",
 		"@typescript-eslint/parser": "^7.11.0",
 		"@vscode/test-cli": "^0.0.9",
 		"@vscode/test-electron": "^2.4.0",
+		"@biomejs/biome": "^1.8.3",
 		"eslint": "^8.57.0",
 		"typescript": "^5.4.5"
 	},
 	"extensionDependencies": [
 		"vscode.git"
 	],
-	"dependencies": {
-		"@biomejs/biome": "^1.8.3"
-	},
+	"dependencies": {},
 	"volta": {
 		"node": "20.16.0"
 	}
