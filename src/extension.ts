@@ -38,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}, 3000);
 
 	context.subscriptions.push(
-		vscode.window.registerTreeDataProvider("myTreeView", treeProvider),
+		vscode.window.registerTreeDataProvider("EditorPockets", treeProvider),
 		vscode.commands.registerCommand("extension.addEntry", () => {
 			treeProvider.addEntry();
 		}),

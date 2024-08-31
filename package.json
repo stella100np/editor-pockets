@@ -16,14 +16,14 @@
 		"views": {
 			"explorer": [
 				{
-					"id": "myTreeView",
-					"name": "myTreeView"
+					"id": "EditorPockets",
+					"name": "💼Editor Pockets"
 				}
 			]
 		},
 		"viewsWelcome": [
 			{
-				"view": "myTreeView",
+				"view": "EditorPockets",
 				"contents": "[Add Pocket](command:extension.addEntry)"
 			}
 		],
@@ -36,7 +36,7 @@
 			"view/title": [
 				{
 					"command": "extension.addEntry",
-					"when": "view == myTreeView",
+					"when": "view == EditorPockets",
 					"group": "navigation"
 				}
 			],
@@ -44,26 +44,26 @@
 				{
 					"command": "extension.openPocket",
 					"group": "inline@1",
-					"when": "view == myTreeView && viewItem == pocket"
+					"when": "view == EditorPockets && viewItem == pocket"
 				},
 				{
 					"command": "extension.renamePocket",
 					"group": "inline@2",
-					"when": "view == myTreeView && viewItem == pocket"
+					"when": "view == EditorPockets && viewItem == pocket"
 				},
 				{
 					"command": "extension.removePocket",
 					"group": "inline@3",
-					"when": "view == myTreeView && viewItem == pocket"
+					"when": "view == EditorPockets && viewItem == pocket"
 				},
 				{
 					"command": "extension.linkBranch",
 					"group": "inline@4",
-					"when": "view == myTreeView && viewItem == pocket && gitOpenRepositoryCount >= 1"
+					"when": "view == EditorPockets && viewItem == pocket && gitOpenRepositoryCount >= 1"
 				},
 				{
 					"command": "extension.unlinkBranch",
-					"when": "view == myTreeView && viewItem == pocket "
+					"when": "view == EditorPockets && viewItem == pocket "
 				}
 			]
 		},
