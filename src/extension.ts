@@ -68,6 +68,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(
 			"extension.unlinkBranch",
 			(node: MyTreeNode) => {
+				node.description = undefined;
+				branchesMap.delete(node.label);
+				treeProvider.refresh();
 			},
 		),
 	);
