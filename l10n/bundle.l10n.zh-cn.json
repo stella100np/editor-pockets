@@ -1,0 +1,7 @@
+{
+	"pocketNamePlaceholder": "请输入口袋的名字",
+	"choosePocketPlaceholder": "选择一个口袋",
+	"noEditorMsg":"当前没有活跃的编辑器！",
+	"renamePlaceholder": "输入口袋的新名字",
+	"chooseBranchPlaceholder": "选择一个需要关联的分支"
+}

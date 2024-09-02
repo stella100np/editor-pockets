@@ -44,14 +44,8 @@ async function openFilesInGroup(
 export function getRepo() {
 	const gitExtension =
 		vscode.extensions.getExtension<GitExtension>("vscode.git")?.exports;
-	console.log("gitExtension", gitExtension);
-
 	const git = gitExtension?.getAPI(1);
 	if (Array.isArray(vscode.workspace.workspaceFolders) && git) {
-		console.log(
-			"vscode.workspace.workspaceFolders[0].uri",
-			vscode.workspace.workspaceFolders[0].uri,
-		);
 		return git.getRepository(vscode.workspace.workspaceFolders[0].uri);
 	}
 }
@@ -99,7 +93,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 
 	async addEntry() {
 		const value = await vscode.window.showInputBox({
-			placeHolder: "请输入要添加的条目",
+			placeHolder: vscode.l10n.t("pocketNamePlaceholder"),
 		});
 		if (value) {
 			const item = new MyTreeNode(
@@ -117,7 +111,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		if (this.treeData.length) {
 			const nodes = this.treeData.map((v) => v.label);
 			const node = await vscode.window.showQuickPick(nodes, {
-				placeHolder: "选择哪个组",
+				placeHolder: vscode.l10n.t("choosePocketPlaceholder"),
 			});
 			node && this.addPocket(node);
 		} else {
@@ -129,7 +123,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 	addPocket(msg: string) {
 		const activeEditor = vscode.window.activeTextEditor;
 		if (!activeEditor) {
-			vscode.window.showErrorMessage("No editor is currently active.");
+			vscode.window.showErrorMessage(vscode.l10n.t("noEditorMsg"));
 			return;
 		}
 
@@ -194,13 +188,12 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			);
 			targetGroup = vscode.ViewColumn.Beside;
 		}
-		vscode.window.showInformationMessage("All files opened successfully.");
 	}
 	renamePocket(node: MyTreeNode) {
 		vscode.window
 			.showInputBox({
 				value: node.label,
-				placeHolder: "请输入新名称",
+				placeHolder: vscode.l10n.t("renamePlaceholder"),
 			})
 			.then((newName) => {
 				if (newName) {
@@ -219,7 +212,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 				.map((v) => v.name)
 				.filter((v) => v !== undefined);
 			const targetBranchName = await vscode.window.showQuickPick(branchesName, {
-				placeHolder: "选择分支",
+				placeHolder: vscode.l10n.t("chooseBranchPlaceholder"),
 			});
 			if (targetBranchName) {
 				node.description = targetBranchName;

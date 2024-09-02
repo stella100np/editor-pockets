@@ -12,6 +12,7 @@
 	],
 	"activationEvents": [],
 	"main": "./out/extension.js",
+	"l10n": "./l10n",
 	"contributes": {
 		"views": {
 			"explorer": [
@@ -70,11 +71,11 @@
 		"commands": [
 			{
 				"command": "extension.saveTabsToPocket",
-				"title": "Save tabs to pocket..."
+				"title": "%extension.saveTabsToPocket.title%"
 			},
 			{
 				"command": "extension.addEntry",
-				"title": "add a Pocket",
+				"title": "%extension.addEntry.title%",
 				"icon": {
 					"light": "resources/light/add.svg",
 					"dark": "resources/dark/add.svg"
@@ -82,7 +83,7 @@
 			},
 			{
 				"command": "extension.renamePocket",
-				"title": "Rename",
+				"title": "%extension.renamePocket.title%",
 				"icon": {
 					"light": "resources/light/rename.svg",
 					"dark": "resources/dark/rename.svg"
@@ -90,7 +91,7 @@
 			},
 			{
 				"command": "extension.removePocket",
-				"title": "Delete",
+				"title": "%extension.removePocket.title%",
 				"icon": {
 					"light": "resources/light/trash.svg",
 					"dark": "resources/dark/trash.svg"
@@ -98,7 +99,7 @@
 			},
 			{
 				"command": "extension.openPocket",
-				"title": "Open",
+				"title": "%extension.openPocket.title%",
 				"icon": {
 					"light": "resources/light/open.svg",
 					"dark": "resources/dark/open.svg"
@@ -106,7 +107,7 @@
 			},
 			{
 				"command": "extension.linkBranch",
-				"title": "Related to a branch...",
+				"title": "%extension.linkBranch.title%",
 				"icon": {
 					"light": "resources/light/branch-plus.svg",
 					"dark": "resources/dark/branch-plus.svg"
@@ -114,7 +115,7 @@
 			},
 			{
 				"command": "extension.unlinkBranch",
-				"title": "Unlink branch",
+				"title": "%extension.unlinkBranch.title%",
 				"icon": {
 					"light": "resources/light/branch-minus.svg",
 					"dark": "resources/dark/branch-minus.svg"

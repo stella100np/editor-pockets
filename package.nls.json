@@ -1,0 +1,9 @@
+{
+	"extension.saveTabsToPocket.title": "Save tabs to pocket...",
+	"extension.addEntry.title": "add a Pocket",
+	"extension.renamePocket.title":"Rename",
+	"extension.removePocket.title":"Delete",
+	"extension.openPocket.title":"Open",
+	"extension.linkBranch.title":"Related to a branch...",
+	"extension.unlinkBranch.title":"Unlink branch"
+}

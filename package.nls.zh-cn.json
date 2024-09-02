@@ -1,0 +1,9 @@
+{
+	"extension.saveTabsToPocket.title": "将标签保存到口袋...",
+	"extension.addEntry.title": "添加一个口袋",
+	"extension.renamePocket.title": "重命名",
+	"extension.removePocket.title": "删除",
+	"extension.openPocket.title": "打开",
+	"extension.linkBranch.title": "关联分支...",
+	"extension.unlinkBranch.title": "取消关联分支"
+}

@@ -1,0 +1,9 @@
+{
+	"extension.saveTabsToPocket.title": "Archivez l'étiquette...",
+	"extension.addEntry.title": "Ajouter une poche",
+	"extension.renamePocket.title": "Renommez",
+	"extension.removePocket.title": "Supprimez",
+	"extension.openPocket.title": "Ouvrez",
+	"extension.linkBranch.title": "Associez la branche...",
+	"extension.unlinkBranch.title": "Désassociez la branche"
+}
