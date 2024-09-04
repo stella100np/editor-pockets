@@ -215,6 +215,14 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 				placeHolder: vscode.l10n.t("chooseBranchPlaceholder"),
 			});
 			if (targetBranchName) {
+				// remove old link
+				if (branchesMap.has(targetBranchName)) {
+					const oldNode = branchesMap.get(targetBranchName);
+					if (oldNode) {
+						oldNode.description = undefined;
+					}
+				}
+				// add new link
 				node.description = targetBranchName;
 				branchesMap.set(targetBranchName, node);
 				this.refresh();
