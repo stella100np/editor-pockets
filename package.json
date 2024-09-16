@@ -1,153 +1,158 @@
 {
-	"publisher": "shimarindelta",
-	"name": "editor-pockets",
-	"displayName": "editorPockets",
-	"description": "editorPockets",
-	"version": "0.0.2",
-	"engines": {
-		"vscode": "^1.75.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [],
-	"main": "./out/extension.js",
-	"l10n": "./l10n",
-	"contributes": {
-		"views": {
-			"explorer": [
-				{
-					"id": "EditorPockets",
-					"name": "💼Editor Pockets"
-				}
-			]
-		},
-		"viewsWelcome": [
-			{
-				"view": "EditorPockets",
-				"contents": "[Add Pocket](command:extension.addEntry)"
-			}
-		],
-		"menus": {
-			"editor/title": [
-				{
-					"command": "extension.saveTabsToPocket"
-				}
-			],
-			"view/title": [
-				{
-					"command": "extension.addEntry",
-					"when": "view == EditorPockets",
-					"group": "navigation"
-				}
-			],
-			"view/item/context": [
-				{
-					"command": "extension.openPocket",
-					"group": "inline@1",
-					"when": "view == EditorPockets && viewItem == pocket"
-				},
-				{
-					"command": "extension.renamePocket",
-					"group": "inline@2",
-					"when": "view == EditorPockets && viewItem == pocket"
-				},
-				{
-					"command": "extension.removePocket",
-					"group": "inline@3",
-					"when": "view == EditorPockets && viewItem == pocket"
-				},
-				{
-					"command": "extension.linkBranch",
-					"group": "inline@4",
-					"when": "view == EditorPockets && viewItem == pocket && gitOpenRepositoryCount >= 1"
-				},
-				{
-					"command": "extension.unlinkBranch",
-					"when": "view == EditorPockets && viewItem == pocket "
-				}
-			]
-		},
-		"commands": [
-			{
-				"command": "extension.saveTabsToPocket",
-				"title": "%extension.saveTabsToPocket.title%"
-			},
-			{
-				"command": "extension.addEntry",
-				"title": "%extension.addEntry.title%",
-				"icon": {
-					"light": "resources/light/add.svg",
-					"dark": "resources/dark/add.svg"
-				}
-			},
-			{
-				"command": "extension.renamePocket",
-				"title": "%extension.renamePocket.title%",
-				"icon": {
-					"light": "resources/light/rename.svg",
-					"dark": "resources/dark/rename.svg"
-				}
-			},
-			{
-				"command": "extension.removePocket",
-				"title": "%extension.removePocket.title%",
-				"icon": {
-					"light": "resources/light/trash.svg",
-					"dark": "resources/dark/trash.svg"
-				}
-			},
-			{
-				"command": "extension.openPocket",
-				"title": "%extension.openPocket.title%",
-				"icon": {
-					"light": "resources/light/open.svg",
-					"dark": "resources/dark/open.svg"
-				}
-			},
-			{
-				"command": "extension.linkBranch",
-				"title": "%extension.linkBranch.title%",
-				"icon": {
-					"light": "resources/light/branch-plus.svg",
-					"dark": "resources/dark/branch-plus.svg"
-				}
-			},
-			{
-				"command": "extension.unlinkBranch",
-				"title": "%extension.unlinkBranch.title%",
-				"icon": {
-					"light": "resources/light/branch-minus.svg",
-					"dark": "resources/dark/branch-minus.svg"
-				}
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "pnpm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "pnpm run compile && pnpm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "vscode-test"
-	},
-	"devDependencies": {
-		"@types/mocha": "^10.0.7",
-		"@types/node": "20.x",
-		"@types/vscode": "^1.75.0",
-		"@typescript-eslint/eslint-plugin": "^7.14.1",
-		"@typescript-eslint/parser": "^7.11.0",
-		"@vscode/test-cli": "^0.0.9",
-		"@vscode/test-electron": "^2.4.0",
-		"@biomejs/biome": "^1.8.3",
-		"eslint": "^8.57.0",
-		"typescript": "^5.4.5"
-	},
-	"extensionDependencies": [
-		"vscode.git"
-	],
-	"dependencies": {},
-	"volta": {
-		"node": "20.16.0"
-	}
+  "name": "editor-pockets",
+  "displayName": "editorPockets",
+  "description": "editorPockets",
+  "author": "stella100np <zgy1453373421@outlook.com>",
+  "version": "0.0.3",
+  "license": "GPL-3.0",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stella100np/editor-pockets.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "l10n": "./l10n",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "EditorPockets",
+          "name": "💼Editor Pockets"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "EditorPockets",
+        "contents": "[Add Pocket](command:extension.addEntry)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "extension.saveTabsToPocket"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "extension.addEntry",
+          "when": "view == EditorPockets",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "extension.openPocket",
+          "group": "inline@1",
+          "when": "view == EditorPockets && viewItem == pocket"
+        },
+        {
+          "command": "extension.renamePocket",
+          "group": "inline@2",
+          "when": "view == EditorPockets && viewItem == pocket"
+        },
+        {
+          "command": "extension.removePocket",
+          "group": "inline@3",
+          "when": "view == EditorPockets && viewItem == pocket"
+        },
+        {
+          "command": "extension.linkBranch",
+          "group": "inline@4",
+          "when": "view == EditorPockets && viewItem == pocket && gitOpenRepositoryCount >= 1"
+        },
+        {
+          "command": "extension.unlinkBranch",
+          "when": "view == EditorPockets && viewItem == pocket "
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "extension.saveTabsToPocket",
+        "title": "%extension.saveTabsToPocket.title%"
+      },
+      {
+        "command": "extension.addEntry",
+        "title": "%extension.addEntry.title%",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
+        "command": "extension.renamePocket",
+        "title": "%extension.renamePocket.title%",
+        "icon": {
+          "light": "resources/light/rename.svg",
+          "dark": "resources/dark/rename.svg"
+        }
+      },
+      {
+        "command": "extension.removePocket",
+        "title": "%extension.removePocket.title%",
+        "icon": {
+          "light": "resources/light/trash.svg",
+          "dark": "resources/dark/trash.svg"
+        }
+      },
+      {
+        "command": "extension.openPocket",
+        "title": "%extension.openPocket.title%",
+        "icon": {
+          "light": "resources/light/open.svg",
+          "dark": "resources/dark/open.svg"
+        }
+      },
+      {
+        "command": "extension.linkBranch",
+        "title": "%extension.linkBranch.title%",
+        "icon": {
+          "light": "resources/light/branch-plus.svg",
+          "dark": "resources/dark/branch-plus.svg"
+        }
+      },
+      {
+        "command": "extension.unlinkBranch",
+        "title": "%extension.unlinkBranch.title%",
+        "icon": {
+          "light": "resources/light/branch-minus.svg",
+          "dark": "resources/dark/branch-minus.svg"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "1.75.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.11.0",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0",
+    "esbuild": "^0.21.5",
+    "eslint": "^8.57.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.4.5"
+  }
 }

@@ -1,71 +1,76 @@
-# filelogger README
+# Editor Pockets - Manage and Restore Open File Groups in VS Code
 
-This is the README for your extension "filelogger". After writing up a brief description, we recommend including the following sections.
+## Overview
+
+Editor Pockets is a robust Visual Studio Code extension designed to help users manage their open editors efficiently. It allows for saving and restoring groups of open files, known as "pockets," along with associated tags for quick reference. This feature makes it particularly useful for those who handle multiple files and projects, needing to switch between different sets of documents seamlessly within a single VS Code window.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- 📝 **Manual Logging**: The extension allows you to manually log the opened document editors within Visual Studio Code by triggering a command from the VSCode tabs. 🛠️
+- 🔃 **Sequential Restore**: Easily restore previously logged document editors in the order they were recorded. ⏭️
+- 🏷️ **Tagging System**: Each restored document editor can be associated with a tag, enabling efficient categorization and management of your files. 🗂️
 
-For example if there is an image subfolder under your extension project workspace:
+## Getting Started
 
-\!\[feature X\]\(images/feature-x.png\)
+### Installation
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. Download the extension from the Visual Studio Code Marketplace.
+2. Install the extension directly from within Visual Studio Code by navigating to the Extensions panel and searching for "editorPockets".
 
-## Requirements
+### Usage
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+#### Basic Workflow
+1. Create a New Pocket
+2. Initiate one or more VSCode file editor windows
+3. Save Current Editors
 
-## Extension Settings
+   3.1 Utilize commands on the tabs
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+   3.2 Save the currently open file editors into a specific pocket
 
-For example:
+4. Continue Editing and Update
 
-This extension contributes the following settings:
+   4.1 Proceed with document editing work
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+   4.2 When intending to update the saved file editors
+   
+   4.3 Use the same command button to achieve the update
 
-## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+#### Advanced Workflow
+   - you can link a particular "pocket" to a Git branch. 
+   - When switching to the specified branch from another, this plugin will automatically open the required file editors, allowing you to quickly resume your work
 
-## Release Notes
 
-Users appreciate release notes as you update your extension.
+## API and Dependencies
 
-### 1.0.0
+The extension leverages the following technologies:
 
-Initial release of ...
+- **[Visual Studio Code API](https://code.visualstudio.com/)**: For seamless integration with the editor and managing document editors.
+- **[Esbuild](https://github.com/evanw/esbuild)**: Used for bundling the extension.
+- **[TypeScript](https://www.typescriptlang.org/)**: The programming language in which the extension is developed.
 
-### 1.0.1
+## Known Issues and Limitations
 
-Fixed issue #.
+- The extension currently does not support automatic logging for multiple workspace folders.
+- Tags must be manually assigned during the restoration process of document editors.
 
-### 1.1.0
+## Roadmap
 
-Added features X, Y, and Z.
+- Implement support for automatic logging across multiple workspace folders.
+- Introduce automatic tagging based on file types or user-defined rules.
+- Enhance the restore functionality to include saved editor layouts and states.
+
+## Contributing
+
+Contributions are welcome! If you have ideas for improving the extension, please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the terms of the GNU GPL v3 license.See the [LICENSE file](LICENSE) for details.
 
 ---
 
-## Following extension guidelines
+For any further queries or support, feel free to reach out to the extension maintainer at [your contact information].
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Happy coding with Editor Pockets!
