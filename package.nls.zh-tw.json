@@ -5,5 +5,6 @@
 	"extension.removePocket.title": "刪除",
 	"extension.openPocket.title": "打開",
 	"extension.linkBranch.title": "關聯分支...",
-	"extension.unlinkBranch.title": "取消關聯分支"
+	"extension.unlinkBranch.title": "取消關聯分支",
+	"editor_pockets": "編輯器口袋"
 }

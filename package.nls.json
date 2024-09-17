@@ -5,5 +5,6 @@
 	"extension.removePocket.title": "Pocket: Delete a Pocket",
 	"extension.openPocket.title": "Pocket: Open a Pocket",
 	"extension.linkBranch.title": "Pocket: Related to a branch...",
-	"extension.unlinkBranch.title": "Pocket: Unlink branch"
+	"extension.unlinkBranch.title": "Pocket: Unlink branch",
+	"editor_pockets": "Editor Pockets"
 }
