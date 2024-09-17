@@ -26,14 +26,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 	setTimeout(() => {
 		const repo = getRepo();
-		console.log(repo);
 		let currentBranch = repo?.state.HEAD?.name;
 		repo?.state.onDidChange((e) => {
 			const newBranch = repo?.state.HEAD?.name;
 			if (newBranch && newBranch !== currentBranch) {
 				currentBranch = newBranch;
 				const node = branchesMap.get(newBranch);
-				console.log(node);
 				if (node) {
 					treeProvider.openPocket(node);
 				}
@@ -56,8 +54,8 @@ export function activate(context: vscode.ExtensionContext) {
 		),
 		// 删除口袋
 		vscode.commands.registerCommand(
-			"extension.removePocket",
-			(node: MyTreeNode) => checkNode(node) && treeProvider.removePocket(node),
+			"editor-pockets.remove",
+			(node: MyTreeNode) => checkNode(node) && treeProvider.remove(node),
 		),
 		vscode.commands.registerCommand(
 			"extension.openPocket",

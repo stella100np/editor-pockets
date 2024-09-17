@@ -2,7 +2,7 @@
 	"editor-pockets.saveTabs.title": "將標籤保存到口袋...",
 	"extension.addEntry.title": "添加一個口袋",
 	"extension.renamePocket.title": "重命名",
-	"extension.removePocket.title": "刪除",
+	"editor-pockets.remove.title": "刪除",
 	"extension.openPocket.title": "打開",
 	"extension.linkBranch.title": "關聯分支...",
 	"extension.unlinkBranch.title": "取消關聯分支",

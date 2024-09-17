@@ -3,7 +3,7 @@
   "displayName": "Editor Pockets",
   "description": "Editor Pockets - Manage and Restore Open File Groups in VS Code",
   "author": "stella100np <zgy1453373421@outlook.com>",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "GPL-3.0",
   "engines": {
     "vscode": "^1.75.0"
@@ -58,9 +58,9 @@
           "when": "view == EditorPockets && viewItem == pocket"
         },
         {
-          "command": "extension.removePocket",
+          "command": "editor-pockets.remove",
           "group": "inline@3",
-          "when": "view == EditorPockets && viewItem == pocket"
+          "when": "view == EditorPockets"
         },
         {
           "command": "extension.linkBranch",
@@ -95,8 +95,8 @@
         }
       },
       {
-        "command": "extension.removePocket",
-        "title": "%extension.removePocket.title%",
+        "command": "editor-pockets.remove",
+        "title": "%editor-pockets.remove.title%",
         "icon": {
           "light": "resources/light/trash.svg",
           "dark": "resources/dark/trash.svg"
@@ -152,5 +152,8 @@
     "esbuild": "^0.21.5",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "nanoid": "3"
   }
 }

@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
-import type { GitExtension } from "./types/git";
-
+import type { GitExtension } from "./types/git.d.ts"; // 如果 types/git 是一个类型定义文件
+import { nanoid } from "nanoid";
+// 或者
 // contextValue枚举
 enum ContextValue {
 	POCKET = "pocket",
@@ -100,6 +101,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 				value,
 				vscode.TreeItemCollapsibleState.Collapsed,
 			);
+			item.id = nanoid();
 			item.contextValue = ContextValue.POCKET;
 			this.treeData.push(item);
 			this.refresh();
@@ -141,6 +143,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 					vscode.TreeItemCollapsibleState.Expanded,
 				);
 				compartment.contextValue = ContextValue.COMPARTMENT;
+				compartment.id = nanoid();
 
 				for (let j = 0; j < splitedList.tabs.length; j++) {
 					const tab = splitedList.tabs[j];
@@ -151,6 +154,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 						);
 						docNode.contextValue = ContextValue.DOCUMENT;
 						docNode.description = tab.input.uri.fsPath;
+						docNode.id = nanoid();
 						compartment.children.push(docNode);
 					}
 				}
@@ -162,14 +166,32 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		}
 	}
 
-	removePocket(targetItem: MyTreeNode | undefined) {
-		if (targetItem) {
-			const index = this.treeData.findIndex(
-				(item) => item.label === targetItem.label,
-			);
-			if (index !== -1) {
-				this.treeData.splice(index, 1);
+	remove(targetItem: MyTreeNode) {
+		for (let i = 0; i < this.treeData.length; i++) {
+			const pocket = this.treeData[i];
+			if (pocket.id === targetItem.id) {
+				// 删除
+				this.treeData.splice(i, 1);
 				this.refresh();
+				return;
+			}
+			for (let j = 0; j < pocket.children.length; j++) {
+				const compartment = pocket.children[j];
+				if (compartment.id === targetItem.id) {
+					// 删除
+					pocket.children.splice(j, 1);
+					this.refresh();
+					return;
+				}
+				for (let k = 0; k < compartment.children.length; k++) {
+					const docNode = compartment.children[k];
+					if (docNode.id === targetItem.id) {
+						// 删除
+						compartment.children.splice(k, 1);
+						this.refresh();
+						return;
+					}
+				}
 			}
 		}
 	}
@@ -178,7 +200,6 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		let targetGroup = vscode.window.activeTextEditor
 			? vscode.window.activeTextEditor.viewColumn
 			: undefined;
-		// await openFilesInGroup(filePaths, targetGroup);
 		for (let i = 0; i < targetItem.children.length; i++) {
 			const compartmentNode = targetItem.children[i];
 			await openFilesInGroup(
