@@ -42,13 +42,13 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("extension.addEntry", () => {
 			treeProvider.addEntry();
 		}),
-		vscode.commands.registerCommand("extension.saveTabsToPocket", () =>
+		vscode.commands.registerCommand("editor-pockets.saveTabs", () =>
 			treeProvider.beforeAddTabs(),
 		),
 		// 重命名口袋
 		vscode.commands.registerCommand(
 			"extension.renamePocket",
-			(node: MyTreeNode) => treeProvider.renamePocket(node),
+			(node: MyTreeNode) => node && treeProvider.renamePocket(node),
 		),
 		// 删除口袋
 		vscode.commands.registerCommand(

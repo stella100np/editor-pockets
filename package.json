@@ -36,7 +36,7 @@
     "menus": {
       "editor/title": [
         {
-          "command": "extension.saveTabsToPocket"
+          "command": "editor-pockets.saveTabs"
         }
       ],
       "view/title": [
@@ -75,8 +75,8 @@
     },
     "commands": [
       {
-        "command": "extension.saveTabsToPocket",
-        "title": "%extension.saveTabsToPocket.title%"
+        "command": "editor-pockets.saveTabs",
+        "title": "%editor-pockets.saveTabs.title%"
       },
       {
         "command": "extension.addEntry",
@@ -143,6 +143,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.1",
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
     "@types/vscode": "1.75.0",

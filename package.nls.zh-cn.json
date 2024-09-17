@@ -1,5 +1,5 @@
 {
-	"extension.saveTabsToPocket.title": "将标签保存到口袋...",
+	"editor-pockets.saveTabs.title": "将标签保存到口袋...",
 	"extension.addEntry.title": "添加一个口袋",
 	"extension.renamePocket.title": "重命名",
 	"extension.removePocket.title": "删除",
