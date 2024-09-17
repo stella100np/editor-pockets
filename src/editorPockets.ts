@@ -137,7 +137,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			for (let i = 0; i < allTabs.length; i++) {
 				const splitedList = allTabs[i];
 				const compartment = new MyTreeNode(
-					`group${splitedList.viewColumn}`,
+					vscode.l10n.t("group {0}", splitedList.viewColumn),
 					vscode.TreeItemCollapsibleState.Expanded,
 				);
 				compartment.contextValue = ContextValue.COMPARTMENT;

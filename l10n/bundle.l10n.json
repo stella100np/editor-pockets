@@ -4,5 +4,6 @@
 	"noEditorMsg": "No editor is currently active!",
 	"noNodeMsg": "Please use the buttons in the explorer instead of using the commands",
 	"renamePlaceholder": "Enter a new name for the pocket",
-	"chooseBranchPlaceholder": "Choose a branch to link"
+	"chooseBranchPlaceholder": "Choose a branch to link",
+	"group {0}": "Group {0}"
 }

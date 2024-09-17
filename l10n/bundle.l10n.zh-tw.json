@@ -4,5 +4,6 @@
 	"noEditorMsg": "當前沒有活躍的編輯器！",
 	"noNodeMsg": "請使用資源管理器中的按鈕，而不是使用命令",
 	"renamePlaceholder": "輸入口袋的新名字",
-	"chooseBranchPlaceholder": "選擇一個需要關聯的分支"
+	"chooseBranchPlaceholder": "選擇一個需要關聯的分支",
+	"group {0}": "組 {0}"
 }

@@ -4,5 +4,6 @@
 	"noEditorMsg": "Aucun éditeur n'est actuellement actif!",
 	"noNodeMsg": "Veuillez utiliser les boutons dans l'explorateur au lieu d'utiliser les commandes.",
 	"renamePlaceholder": "Entrez un nouveau nom pour la poche",
-	"chooseBranchPlaceholder": "Choisissez une branche à lier"
+	"chooseBranchPlaceholder": "Choisissez une branche à lier",
+	"group {0}": "Groupe {0}"
 }
