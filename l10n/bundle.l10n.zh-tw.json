@@ -5,5 +5,8 @@
 	"noNodeMsg": "請使用資源管理器中的按鈕，而不是使用命令",
 	"renamePlaceholder": "輸入口袋的新名字",
 	"chooseBranchPlaceholder": "選擇一個需要關聯的分支",
-	"group {0}": "組 {0}"
+	"group {0}": "組 {0}",
+	"closeOthersPlaceholder": "切換到該分支時，是否自動關閉其他文件編輯器",
+	"yes": "是",
+	"no": "否"
 }

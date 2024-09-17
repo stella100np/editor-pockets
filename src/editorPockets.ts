@@ -12,6 +12,7 @@ const WORKSPACESTATE_KEY = "editorpocketstorage";
 
 export class MyTreeNode extends vscode.TreeItem {
 	public children: MyTreeNode[] = [];
+	public isAutoCloseOthers = false;
 	constructor(
 		public label: string,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
@@ -196,6 +197,9 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		}
 	}
 	async openPocket(targetItem: MyTreeNode) {
+		if (targetItem.isAutoCloseOthers) {
+			await vscode.commands.executeCommand("workbench.action.closeAllEditors");
+		}
 		// 确定目标编辑器组
 		let targetGroup = vscode.window.activeTextEditor
 			? vscode.window.activeTextEditor.viewColumn
@@ -234,6 +238,14 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			const targetBranchName = await vscode.window.showQuickPick(branchesName, {
 				placeHolder: vscode.l10n.t("chooseBranchPlaceholder"),
 			});
+			const options = [
+				{ label: vscode.l10n.t("yes"), value: true },
+				{ label: vscode.l10n.t("no"), value: false },
+			];
+			// 是否自动关闭其他编辑器
+			const selectedOption = await vscode.window.showQuickPick(options, {
+				placeHolder: vscode.l10n.t("closeOthersPlaceholder"),
+			});
 			if (targetBranchName) {
 				// remove old link
 				if (branchesMap.has(targetBranchName)) {
@@ -242,8 +254,10 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 						oldNode.description = undefined;
 					}
 				}
+
 				// add new link
 				node.description = targetBranchName;
+				node.isAutoCloseOthers = selectedOption?.value || false;
 				branchesMap.set(targetBranchName, node);
 				this.refresh();
 			}

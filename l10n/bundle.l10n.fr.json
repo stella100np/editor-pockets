@@ -5,5 +5,8 @@
 	"noNodeMsg": "Veuillez utiliser les boutons dans l'explorateur au lieu d'utiliser les commandes.",
 	"renamePlaceholder": "Entrez un nouveau nom pour la poche",
 	"chooseBranchPlaceholder": "Choisissez une branche à lier",
-	"group {0}": "Groupe {0}"
+	"group {0}": "Groupe {0}",
+	"closeOthersPlaceholder": "La bascule vers cette branche ferme-t-elle automatiquement les autres éditeurs de fichiers ?",
+	"yes": "oui",
+	"no": "non"
 }
