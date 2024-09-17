@@ -1,11 +1,15 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import {
-	getRepo,
-	MyTreeDataProvider,
-	type MyTreeNode,
-} from "./editorPockets";
+import { MyTreeDataProvider, type MyTreeNode, getRepo } from "./editorPockets";
+
+function checkNode(node: MyTreeNode) {
+	if (!node) {
+		vscode.window.showWarningMessage(vscode.l10n.t("noNodeMsg"));
+		return false;
+	}
+	return true;
+}
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -48,29 +52,31 @@ export function activate(context: vscode.ExtensionContext) {
 		// 重命名口袋
 		vscode.commands.registerCommand(
 			"extension.renamePocket",
-			(node: MyTreeNode) => node && treeProvider.renamePocket(node),
+			(node: MyTreeNode) => checkNode(node) && treeProvider.renamePocket(node),
 		),
 		// 删除口袋
 		vscode.commands.registerCommand(
 			"extension.removePocket",
-			(node: MyTreeNode) => treeProvider.removeCompartments(node),
+			(node: MyTreeNode) => checkNode(node) && treeProvider.removePocket(node),
 		),
 		vscode.commands.registerCommand(
 			"extension.openPocket",
-			(node: MyTreeNode) => treeProvider.openPocket(node),
+			(node: MyTreeNode) => checkNode(node) && treeProvider.openPocket(node),
 		),
 		vscode.commands.registerCommand(
 			"extension.linkBranch",
 			(node: MyTreeNode) => {
-				treeProvider.linkGitBranch(node, branchesMap);
+				checkNode(node) && treeProvider.linkGitBranch(node, branchesMap);
 			},
 		),
 		vscode.commands.registerCommand(
 			"extension.unlinkBranch",
 			(node: MyTreeNode) => {
-				node.description = undefined;
-				branchesMap.delete(node.label);
-				treeProvider.refresh();
+				if (checkNode(node)) {
+					node.description = undefined;
+					branchesMap.delete(node.label);
+					treeProvider.refresh();
+				}
 			},
 		),
 	);

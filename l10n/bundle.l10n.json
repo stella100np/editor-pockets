@@ -2,7 +2,7 @@
 	"pocketNamePlaceholder": "Enter your pocket`s name",
 	"choosePocketPlaceholder": "Choose a pocket",
 	"noEditorMsg": "No editor is currently active!",
-	"noNodeMsg": "Please use menu ui to operate!",
+	"noNodeMsg": "Please use the buttons in the explorer instead of using the commands",
 	"renamePlaceholder": "Enter a new name for the pocket",
 	"chooseBranchPlaceholder": "Choose a branch to link"
 }

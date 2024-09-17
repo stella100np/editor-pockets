@@ -127,14 +127,12 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			return;
 		}
 
-		console.log(msg);
 		// biome-ignore lint/style/useConst: <explanation>
 		let targetItem = this.treeData.find((item) => {
 			return item.label === msg;
 		});
 		if (targetItem) {
 			const result: MyTreeNode[] = [];
-			console.log(vscode.window.tabGroups.all);
 			const allTabs = vscode.window.tabGroups.all;
 			for (let i = 0; i < allTabs.length; i++) {
 				const splitedList = allTabs[i];
@@ -163,7 +161,8 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			this.refresh();
 		}
 	}
-	removeCompartments(targetItem: MyTreeNode | undefined) {
+
+	removePocket(targetItem: MyTreeNode | undefined) {
 		if (targetItem) {
 			const index = this.treeData.findIndex(
 				(item) => item.label === targetItem.label,
@@ -174,14 +173,14 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			}
 		}
 	}
-	async openPocket(node: MyTreeNode) {
+	async openPocket(targetItem: MyTreeNode) {
 		// 确定目标编辑器组
 		let targetGroup = vscode.window.activeTextEditor
 			? vscode.window.activeTextEditor.viewColumn
 			: undefined;
 		// await openFilesInGroup(filePaths, targetGroup);
-		for (let i = 0; i < node.children.length; i++) {
-			const compartmentNode = node.children[i];
+		for (let i = 0; i < targetItem.children.length; i++) {
+			const compartmentNode = targetItem.children[i];
 			await openFilesInGroup(
 				compartmentNode.children.map((v) => v.description),
 				targetGroup,
@@ -189,15 +188,15 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			targetGroup = vscode.ViewColumn.Beside;
 		}
 	}
-	renamePocket(node: MyTreeNode) {
+	renamePocket(targetItem: MyTreeNode) {
 		vscode.window
 			.showInputBox({
-				value: node.label,
+				value: targetItem.label,
 				placeHolder: vscode.l10n.t("renamePlaceholder"),
 			})
 			.then((newName) => {
 				if (newName) {
-					node.label = newName;
+					targetItem.label = newName;
 					this.refresh();
 				}
 			});
