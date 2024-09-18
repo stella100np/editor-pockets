@@ -1,10 +1,10 @@
 {
-	"editor-pockets.saveTabs.title": "Pocket: Save tabs to ...",
-	"extension.addEntry.title": "Pocket: Add a Pocket",
-	"extension.renamePocket.title": "Pocket: Rename a Pocket",
-	"editor-pockets.remove.title": "Pocket: Delete a Pocket",
-	"extension.openPocket.title": "Pocket: Open a Pocket",
-	"extension.linkBranch.title": "Pocket: Related to a branch...",
-	"extension.unlinkBranch.title": "Pocket: Unlink branch",
+	"editor-pockets.saveTabs.title": "Save tabs to a pocket...",
+	"extension.addEntry.title": " Add a Pocket",
+	"extension.renamePocket.title": " Rename a Pocket",
+	"editor-pockets.remove.title": " Delete a Pocket",
+	"extension.openPocket.title": " Open a Pocket",
+	"extension.linkBranch.title": " Related to a branch...",
+	"extension.unlinkBranch.title": " Unlink branch",
 	"editor_pockets": "Editor Pockets"
 }

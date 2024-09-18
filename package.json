@@ -76,11 +76,13 @@
     "commands": [
       {
         "command": "editor-pockets.saveTabs",
-        "title": "%editor-pockets.saveTabs.title%"
+        "title": "%editor-pockets.saveTabs.title%",
+        "category": "EditorPockets"
       },
       {
         "command": "extension.addEntry",
         "title": "%extension.addEntry.title%",
+        "category": "EditorPockets",
         "icon": {
           "light": "resources/light/add.svg",
           "dark": "resources/dark/add.svg"
@@ -89,6 +91,7 @@
       {
         "command": "extension.renamePocket",
         "title": "%extension.renamePocket.title%",
+        "category": "EditorPockets",
         "icon": {
           "light": "resources/light/rename.svg",
           "dark": "resources/dark/rename.svg"
@@ -97,6 +100,7 @@
       {
         "command": "editor-pockets.remove",
         "title": "%editor-pockets.remove.title%",
+        "category": "EditorPockets",
         "icon": {
           "light": "resources/light/trash.svg",
           "dark": "resources/dark/trash.svg"
@@ -105,6 +109,7 @@
       {
         "command": "extension.openPocket",
         "title": "%extension.openPocket.title%",
+        "category": "EditorPockets",
         "icon": {
           "light": "resources/light/open.svg",
           "dark": "resources/dark/open.svg"
@@ -113,6 +118,7 @@
       {
         "command": "extension.linkBranch",
         "title": "%extension.linkBranch.title%",
+        "category": "EditorPockets",
         "icon": {
           "light": "resources/light/branch-plus.svg",
           "dark": "resources/dark/branch-plus.svg"
@@ -121,6 +127,7 @@
       {
         "command": "extension.unlinkBranch",
         "title": "%extension.unlinkBranch.title%",
+        "category": "EditorPockets",
         "icon": {
           "light": "resources/light/branch-minus.svg",
           "dark": "resources/dark/branch-minus.svg"
