@@ -13,6 +13,7 @@ const WORKSPACESTATE_KEY = "editorpocketstorage";
 export class MyTreeNode extends vscode.TreeItem {
 	public children: MyTreeNode[] = [];
 	public isAutoCloseOthers = false;
+	public branch: string | undefined;
 	constructor(
 		public label: string,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
@@ -232,33 +233,42 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			const branches = await repo.getBranches({
 				remote: true,
 			});
-			const branchesName = branches
-				.map((v) => v.name)
-				.filter((v) => v !== undefined);
-			const targetBranchName = await vscode.window.showQuickPick(branchesName, {
+			const branchOptions = branches
+				.filter((v) => v.name !== undefined)
+				.map((v) => {
+					return {
+						label: `$(git-branch)${v.name}`,
+						value: v.name,
+						description: v.commit,
+					};
+				});
+
+			const targetBranch = await vscode.window.showQuickPick(branchOptions, {
 				placeHolder: vscode.l10n.t("chooseBranchPlaceholder"),
 			});
 			const options = [
-				{ label: vscode.l10n.t("yes"), value: true },
-				{ label: vscode.l10n.t("no"), value: false },
+				{ label: `$(check)${vscode.l10n.t("yes")}`, value: true },
+				{ label: `$(chrome-close)${vscode.l10n.t("no")}`, value: false },
 			];
 			// 是否自动关闭其他编辑器
 			const selectedOption = await vscode.window.showQuickPick(options, {
 				placeHolder: vscode.l10n.t("closeOthersPlaceholder"),
 			});
-			if (targetBranchName) {
+			if (targetBranch?.value) {
 				// remove old link
-				if (branchesMap.has(targetBranchName)) {
-					const oldNode = branchesMap.get(targetBranchName);
+				if (branchesMap.has(targetBranch.value)) {
+					const oldNode = branchesMap.get(targetBranch.value);
 					if (oldNode) {
+						oldNode.branch = undefined;
 						oldNode.description = undefined;
 					}
 				}
 
 				// add new link
-				node.description = targetBranchName;
+				node.branch = targetBranch.value;
 				node.isAutoCloseOthers = selectedOption?.value || false;
-				branchesMap.set(targetBranchName, node);
+				node.description = `🌿${node.isAutoCloseOthers ? "🚀" : ""} ${node.branch}`;
+				branchesMap.set(targetBranch.value, node);
 				this.refresh();
 			}
 			// console.log(repo.state.HEAD?.name, repo.state.HEAD?.remote)
