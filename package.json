@@ -1,166 +1,173 @@
 {
-  "name": "editor-pockets",
-  "displayName": "Editor Pockets",
-  "description": "Editor Pockets - Manage and Restore Open File Groups in VS Code",
-  "author": "stella100np <zgy1453373421@outlook.com>",
-  "version": "0.0.4",
-  "license": "GPL-3.0",
-  "engines": {
-    "vscode": "^1.75.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/stella100np/editor-pockets.git"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
-  "l10n": "./l10n",
-  "contributes": {
-    "views": {
-      "explorer": [
-        {
-          "id": "EditorPockets",
-          "name": "%editor_pockets%"
-        }
-      ]
-    },
-    "viewsWelcome": [
-      {
-        "view": "EditorPockets",
-        "contents": "[Add Pocket](command:extension.addEntry)"
-      }
-    ],
-    "menus": {
-      "editor/title": [
-        {
-          "command": "editor-pockets.saveTabs"
-        }
-      ],
-      "view/title": [
-        {
-          "command": "extension.addEntry",
-          "when": "view == EditorPockets",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "extension.openPocket",
-          "group": "inline@1",
-          "when": "view == EditorPockets && viewItem == pocket"
-        },
-        {
-          "command": "extension.renamePocket",
-          "group": "inline@2",
-          "when": "view == EditorPockets && viewItem == pocket"
-        },
-        {
-          "command": "editor-pockets.remove",
-          "group": "inline@3",
-          "when": "view == EditorPockets"
-        },
-        {
-          "command": "extension.linkBranch",
-          "group": "inline@4",
-          "when": "view == EditorPockets && viewItem == pocket && gitOpenRepositoryCount >= 1"
-        },
-        {
-          "command": "extension.unlinkBranch",
-          "when": "view == EditorPockets && viewItem == pocket "
-        }
-      ]
-    },
-    "commands": [
-      {
-        "command": "editor-pockets.saveTabs",
-        "title": "%editor-pockets.saveTabs.title%",
-        "category": "EditorPockets"
-      },
-      {
-        "command": "extension.addEntry",
-        "title": "%extension.addEntry.title%",
-        "category": "EditorPockets",
-        "icon": {
-          "light": "resources/light/add.svg",
-          "dark": "resources/dark/add.svg"
-        }
-      },
-      {
-        "command": "extension.renamePocket",
-        "title": "%extension.renamePocket.title%",
-        "category": "EditorPockets",
-        "icon": {
-          "light": "resources/light/rename.svg",
-          "dark": "resources/dark/rename.svg"
-        }
-      },
-      {
-        "command": "editor-pockets.remove",
-        "title": "%editor-pockets.remove.title%",
-        "category": "EditorPockets",
-        "icon": {
-          "light": "resources/light/trash.svg",
-          "dark": "resources/dark/trash.svg"
-        }
-      },
-      {
-        "command": "extension.openPocket",
-        "title": "%extension.openPocket.title%",
-        "category": "EditorPockets",
-        "icon": {
-          "light": "resources/light/open.svg",
-          "dark": "resources/dark/open.svg"
-        }
-      },
-      {
-        "command": "extension.linkBranch",
-        "title": "%extension.linkBranch.title%",
-        "category": "EditorPockets",
-        "icon": {
-          "light": "resources/light/branch-plus.svg",
-          "dark": "resources/dark/branch-plus.svg"
-        }
-      },
-      {
-        "command": "extension.unlinkBranch",
-        "title": "%extension.unlinkBranch.title%",
-        "category": "EditorPockets",
-        "icon": {
-          "light": "resources/light/branch-minus.svg",
-          "dark": "resources/dark/branch-minus.svg"
-        }
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "pnpm run package",
-    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "check-types": "tsc --noEmit",
-    "lint": "biome check --write ./src",
-    "test": "vscode-test"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.9.1",
-    "@types/mocha": "^10.0.7",
-    "@types/node": "20.x",
-    "@types/vscode": "1.75.0",
-    "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.4.0",
-    "esbuild": "^0.21.5",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.4.5"
-  },
-  "dependencies": {
-    "nanoid": "3"
-  }
+	"name": "editor-pockets",
+	"displayName": "Editor Pockets",
+	"description": "Editor Pockets - Manage and Restore Open File Groups in VS Code",
+	"author": "stella100np <zgy1453373421@outlook.com>",
+	"version": "0.0.4",
+	"license": "GPL-3.0",
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/stella100np/editor-pockets.git"
+	},
+	"categories": ["Other"],
+	"activationEvents": [],
+	"main": "./dist/extension.js",
+	"l10n": "./l10n",
+	"contributes": {
+		"views": {
+			"explorer": [
+				{
+					"id": "EditorPockets",
+					"name": "%editor_pockets%"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "EditorPockets",
+				"contents": "[Add Pocket](command:extension.addEntry)"
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "editor-pockets.saveTabs"
+				}
+			],
+			"view/title": [
+				{
+					"command": "extension.addEntry",
+					"when": "view == EditorPockets",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "extension.openPocket",
+					"group": "inline@1",
+					"when": "view == EditorPockets && viewItem == pocket"
+				},
+				{
+					"command": "extension.renamePocket",
+					"group": "inline@2",
+					"when": "view == EditorPockets && viewItem == pocket"
+				},
+				{
+					"command": "editor-pockets.remove",
+					"group": "inline@3",
+					"when": "view == EditorPockets"
+				},
+				{
+					"command": "extension.linkBranch",
+					"group": "inline@4",
+					"when": "view == EditorPockets && viewItem == pocket && gitOpenRepositoryCount >= 1"
+				},
+				{
+					"command": "extension.unlinkBranch",
+					"when": "view == EditorPockets && viewItem == pocket "
+				},
+				{
+					"command": "extension.togglePocketSetting",
+					"when": "view == EditorPockets && viewItem == pocket"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "editor-pockets.saveTabs",
+				"title": "%editor-pockets.saveTabs.title%",
+				"category": "EditorPockets"
+			},
+			{
+				"command": "extension.addEntry",
+				"title": "%extension.addEntry.title%",
+				"category": "EditorPockets",
+				"icon": {
+					"light": "resources/light/add.svg",
+					"dark": "resources/dark/add.svg"
+				}
+			},
+			{
+				"command": "extension.renamePocket",
+				"title": "%extension.renamePocket.title%",
+				"category": "EditorPockets",
+				"icon": {
+					"light": "resources/light/rename.svg",
+					"dark": "resources/dark/rename.svg"
+				}
+			},
+			{
+				"command": "editor-pockets.remove",
+				"title": "%editor-pockets.remove.title%",
+				"category": "EditorPockets",
+				"icon": {
+					"light": "resources/light/trash.svg",
+					"dark": "resources/dark/trash.svg"
+				}
+			},
+			{
+				"command": "extension.openPocket",
+				"title": "%extension.openPocket.title%",
+				"category": "EditorPockets",
+				"icon": {
+					"light": "resources/light/open.svg",
+					"dark": "resources/dark/open.svg"
+				}
+			},
+			{
+				"command": "extension.linkBranch",
+				"title": "%extension.linkBranch.title%",
+				"category": "EditorPockets",
+				"icon": {
+					"light": "resources/light/branch-plus.svg",
+					"dark": "resources/dark/branch-plus.svg"
+				}
+			},
+			{
+				"command": "extension.unlinkBranch",
+				"title": "%extension.unlinkBranch.title%",
+				"category": "EditorPockets",
+				"icon": {
+					"light": "resources/light/branch-minus.svg",
+					"dark": "resources/dark/branch-minus.svg"
+				}
+			},
+			{
+				"command": "extension.togglePocketSetting",
+				"title": "%extension.togglePocketSetting.title%",
+				"category": "EditorPockets"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "pnpm run package",
+		"compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+		"watch": "npm-run-all -p watch:*",
+		"watch:esbuild": "node esbuild.js --watch",
+		"watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+		"package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+		"check-types": "tsc --noEmit",
+		"lint": "biome check --write ./src",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.1",
+		"@types/mocha": "^10.0.7",
+		"@types/node": "20.x",
+		"@types/vscode": "1.75.0",
+		"@vscode/test-cli": "^0.0.9",
+		"@vscode/test-electron": "^2.4.0",
+		"esbuild": "^0.21.5",
+		"npm-run-all": "^4.1.5",
+		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"nanoid": "3"
+	}
 }

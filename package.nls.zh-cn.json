@@ -6,5 +6,6 @@
 	"extension.openPocket.title": "打开",
 	"extension.linkBranch.title": "关联分支...",
 	"extension.unlinkBranch.title": "取消关联分支",
+	"extension.togglePocketSetting.title":"切换时关闭/保持之前的编辑器",
 	"editor_pockets": "编辑器口袋"
 }

@@ -6,5 +6,6 @@
 	"extension.openPocket.title": " Open a Pocket",
 	"extension.linkBranch.title": " Related to a branch...",
 	"extension.unlinkBranch.title": " Unlink branch",
+	"extension.togglePocketSetting.title": "Close/Keep previous editor on switch",
 	"editor_pockets": "Editor Pockets"
 }

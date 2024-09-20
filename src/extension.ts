@@ -72,10 +72,18 @@ export function activate(context: vscode.ExtensionContext) {
 			(node: MyTreeNode) => {
 				if (checkNode(node)) {
 					node.description = undefined;
+					node.branch = undefined
 					branchesMap.delete(node.label);
 					treeProvider.refresh();
 				}
 			},
 		),
+		vscode.commands.registerCommand("extension.togglePocketSetting", (node:MyTreeNode) => {
+			if (checkNode(node)) {
+				node.isAutoCloseOthers = !node.isAutoCloseOthers
+				node.description = `🌿${node.isAutoCloseOthers ? "🚀" : ""} ${node.branch}`;
+				treeProvider.refresh()
+			}
+		})
 	);
 }
