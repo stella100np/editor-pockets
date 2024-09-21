@@ -1,12 +1,12 @@
 {
-	"pocketNamePlaceholder": "Entrez le nom de votre poche",
-	"choosePocketPlaceholder": "Choisissez une poche",
-	"noEditorMsg": "Aucun éditeur n'est actuellement actif!",
-	"noNodeMsg": "Veuillez utiliser les boutons dans l'explorateur au lieu d'utiliser les commandes.",
-	"renamePlaceholder": "Entrez un nouveau nom pour la poche",
-	"chooseBranchPlaceholder": "Choisissez une branche à lier",
-	"group {0}": "Groupe {0}",
-	"closeOthersPlaceholder": "La bascule vers cette branche ferme-t-elle automatiquement les autres éditeurs de fichiers ?",
+	"Enter your pocket`s name": "Entrez le nom de votre poche",
+	"Choose a pocket": "Choisissez une poche",
+	"No editor is currently active!": "Aucun éditeur n'est actuellement actif!",
+	"Please use the buttons in the explorer instead of using the commands": "Veuillez utiliser les boutons dans l'explorateur au lieu d'utiliser les commandes.",
+	"Enter a new name for the pocket": "Entrez un nouveau nom pour la poche",
+	"Choose a branch to link": "Choisissez une branche à lier",
+	"Group {0}": "Groupe {0}",
+	"Will switching to this branch automatically close the other file editors?": "La bascule vers cette branche ferme-t-elle automatiquement les autres éditeurs de fichiers ?",
 	"yes": "oui",
 	"no": "non"
 }

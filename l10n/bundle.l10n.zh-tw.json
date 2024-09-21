@@ -1,12 +1,12 @@
 {
-	"pocketNamePlaceholder": "請輸入口袋的名字",
-	"choosePocketPlaceholder": "選擇一個口袋",
-	"noEditorMsg": "當前沒有活躍的編輯器！",
-	"noNodeMsg": "請使用資源管理器中的按鈕，而不是使用命令",
-	"renamePlaceholder": "輸入口袋的新名字",
-	"chooseBranchPlaceholder": "選擇一個需要關聯的分支",
-	"group {0}": "組 {0}",
-	"closeOthersPlaceholder": "切換到該分支時，是否自動關閉其他文件編輯器",
+	"Enter your pocket`s name": "請輸入口袋的名字",
+	"Choose a pocket": "選擇一個口袋",
+	"No editor is currently active!": "當前沒有活躍的編輯器！",
+	"Please use the buttons in the explorer instead of using the commands": "請使用資源管理器中的按鈕，而不是使用命令",
+	"Enter a new name for the pocket": "輸入口袋的新名字",
+	"Choose a branch to link": "選擇一個需要關聯的分支",
+	"Group {0}": "組 {0}",
+	"Will switching to this branch automatically close the other file editors?": "切換到該分支時，是否自動關閉其他文件編輯器",
 	"yes": "是",
 	"no": "否"
 }

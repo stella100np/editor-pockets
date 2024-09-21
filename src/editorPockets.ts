@@ -96,7 +96,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 
 	async addEntry() {
 		const value = await vscode.window.showInputBox({
-			placeHolder: vscode.l10n.t("pocketNamePlaceholder"),
+			placeHolder: vscode.l10n.t("Enter your pocket`s name"),
 		});
 		if (value) {
 			const item = new MyTreeNode(
@@ -115,7 +115,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		if (this.treeData.length) {
 			const nodes = this.treeData.map((v) => v.label);
 			const node = await vscode.window.showQuickPick(nodes, {
-				placeHolder: vscode.l10n.t("choosePocketPlaceholder"),
+				placeHolder: vscode.l10n.t("Choose a pocket"),
 			});
 			node && this.addPocket(node);
 		} else {
@@ -127,7 +127,9 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 	addPocket(msg: string) {
 		const activeEditor = vscode.window.activeTextEditor;
 		if (!activeEditor) {
-			vscode.window.showErrorMessage(vscode.l10n.t("noEditorMsg"));
+			vscode.window.showErrorMessage(
+				vscode.l10n.t("No editor is currently active!"),
+			);
 			return;
 		}
 
@@ -141,7 +143,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			for (let i = 0; i < allTabs.length; i++) {
 				const splitedList = allTabs[i];
 				const compartment = new MyTreeNode(
-					vscode.l10n.t("group {0}", splitedList.viewColumn),
+					vscode.l10n.t("Group {0}", splitedList.viewColumn),
 					vscode.TreeItemCollapsibleState.Expanded,
 				);
 				compartment.contextValue = ContextValue.COMPARTMENT;
@@ -218,7 +220,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		vscode.window
 			.showInputBox({
 				value: targetItem.label,
-				placeHolder: vscode.l10n.t("renamePlaceholder"),
+				placeHolder: vscode.l10n.t("Enter a new name for the pocket"),
 			})
 			.then((newName) => {
 				if (newName) {
@@ -244,7 +246,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 				});
 
 			const targetBranch = await vscode.window.showQuickPick(branchOptions, {
-				placeHolder: vscode.l10n.t("chooseBranchPlaceholder"),
+				placeHolder: vscode.l10n.t("Choose a branch to link"),
 			});
 			const options = [
 				{ label: `$(check)${vscode.l10n.t("yes")}`, value: true },
@@ -252,7 +254,9 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			];
 			// 是否自动关闭其他编辑器
 			const selectedOption = await vscode.window.showQuickPick(options, {
-				placeHolder: vscode.l10n.t("closeOthersPlaceholder"),
+				placeHolder: vscode.l10n.t(
+					"Will switching to this branch automatically close the other file editors?",
+				),
 			});
 			if (targetBranch?.value) {
 				// remove old link

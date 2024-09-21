@@ -5,7 +5,11 @@ import { MyTreeDataProvider, type MyTreeNode, getRepo } from "./editorPockets";
 
 function checkNode(node: MyTreeNode) {
 	if (!node) {
-		vscode.window.showWarningMessage(vscode.l10n.t("noNodeMsg"));
+		vscode.window.showWarningMessage(
+			vscode.l10n.t(
+				"Please use the buttons in the explorer instead of using the commands",
+			),
+		);
 		return false;
 	}
 	return true;
@@ -72,18 +76,21 @@ export function activate(context: vscode.ExtensionContext) {
 			(node: MyTreeNode) => {
 				if (checkNode(node)) {
 					node.description = undefined;
-					node.branch = undefined
+					node.branch = undefined;
 					branchesMap.delete(node.label);
 					treeProvider.refresh();
 				}
 			},
 		),
-		vscode.commands.registerCommand("extension.togglePocketSetting", (node:MyTreeNode) => {
-			if (checkNode(node)) {
-				node.isAutoCloseOthers = !node.isAutoCloseOthers
-				node.description = `🌿${node.isAutoCloseOthers ? "🚀" : ""} ${node.branch}`;
-				treeProvider.refresh()
-			}
-		})
+		vscode.commands.registerCommand(
+			"extension.togglePocketSetting",
+			(node: MyTreeNode) => {
+				if (checkNode(node)) {
+					node.isAutoCloseOthers = !node.isAutoCloseOthers;
+					node.description = `🌿${node.isAutoCloseOthers ? "🚀" : ""} ${node.branch}`;
+					treeProvider.refresh();
+				}
+			},
+		),
 	);
 }
