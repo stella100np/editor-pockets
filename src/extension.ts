@@ -1,9 +1,14 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { MyTreeDataProvider, type MyTreeNode, getRepo } from "./editorPockets";
+import {
+	MyTreeDataProvider,
+	type BaseTreeNode,
+	getRepo,
+	type PocketNode,
+} from "./editorPockets";
 
-function checkNode(node: MyTreeNode) {
+function checkNode(node: BaseTreeNode) {
 	if (!node) {
 		vscode.window.showWarningMessage(
 			vscode.l10n.t(
@@ -19,7 +24,7 @@ function checkNode(node: MyTreeNode) {
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	const treeProvider = new MyTreeDataProvider(context.workspaceState);
-	const branchesMap = new Map<string, MyTreeNode>();
+	const branchesMap = new Map<string, PocketNode>();
 	const root = treeProvider.getRootNode();
 	for (let i = 0; i < root.length; i++) {
 		const node = root[i];
@@ -57,26 +62,26 @@ export function activate(context: vscode.ExtensionContext) {
 		// 重命名口袋
 		vscode.commands.registerCommand(
 			"extension.renamePocket",
-			(node: MyTreeNode) => checkNode(node) && treeProvider.renamePocket(node),
+			(node: PocketNode) => checkNode(node) && treeProvider.renamePocket(node),
 		),
 		// 删除口袋
 		vscode.commands.registerCommand(
 			"editor-pockets.remove",
-			(node: MyTreeNode) => checkNode(node) && treeProvider.remove(node),
+			(node: BaseTreeNode) => checkNode(node) && treeProvider.remove(node),
 		),
 		vscode.commands.registerCommand(
 			"extension.openPocket",
-			(node: MyTreeNode) => checkNode(node) && treeProvider.openPocket(node),
+			(node: PocketNode) => checkNode(node) && treeProvider.openPocket(node),
 		),
 		vscode.commands.registerCommand(
 			"extension.linkBranch",
-			(node: MyTreeNode) => {
+			(node: PocketNode) => {
 				checkNode(node) && treeProvider.linkGitBranch(node, branchesMap);
 			},
 		),
 		vscode.commands.registerCommand(
 			"extension.unlinkBranch",
-			(node: MyTreeNode) => {
+			(node: PocketNode) => {
 				if (checkNode(node)) {
 					node.description = undefined;
 					node.branch = undefined;
@@ -87,7 +92,7 @@ export function activate(context: vscode.ExtensionContext) {
 		),
 		vscode.commands.registerCommand(
 			"extension.togglePocketSetting",
-			(node: MyTreeNode) => {
+			(node: PocketNode) => {
 				if (checkNode(node)) {
 					node.isAutoCloseOthers = !node.isAutoCloseOthers;
 					node.description = `🌿${node.isAutoCloseOthers ? "🚀" : ""} ${node.branch}`;

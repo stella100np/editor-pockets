@@ -10,15 +10,27 @@ enum ContextValue {
 }
 const WORKSPACESTATE_KEY = "editorpocketstorage";
 
-export class MyTreeNode extends vscode.TreeItem {
-	public children: MyTreeNode[] = [];
+export interface BaseTreeNode extends vscode.TreeItem {
+	children: BaseTreeNode[];
+}
+
+export class PocketNode extends vscode.TreeItem implements BaseTreeNode {
+	public children: BaseTreeNode[] = [];
 	public isAutoCloseOthers = false;
 	public branch: string | undefined;
-	constructor(
-		public label: string,
-		public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-	) {
-		super(label, collapsibleState);
+	constructor(public label: string) {
+		super(label);
+		this.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+		this.contextValue = ContextValue.POCKET;
+	}
+}
+
+class CompartmentNode extends vscode.TreeItem implements BaseTreeNode {
+	public children: BaseTreeNode[] = [];
+	constructor(public label: string) {
+		super(label);
+		this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+		this.contextValue = ContextValue.COMPARTMENT;
 	}
 }
 
@@ -53,34 +65,37 @@ export function getRepo() {
 	}
 }
 
-export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
-	private treeData: MyTreeNode[] = [];
+export class MyTreeDataProvider
+	implements vscode.TreeDataProvider<BaseTreeNode>
+{
+	private treeData: PocketNode[] = [];
 
-	private _onDidChangeTreeData: vscode.EventEmitter<MyTreeNode | undefined> =
-		new vscode.EventEmitter<MyTreeNode | undefined>();
-	readonly onDidChangeTreeData: vscode.Event<MyTreeNode | undefined> =
+	private _onDidChangeTreeData: vscode.EventEmitter<BaseTreeNode | undefined> =
+		new vscode.EventEmitter<BaseTreeNode | undefined>();
+	readonly onDidChangeTreeData: vscode.Event<BaseTreeNode | undefined> =
 		this._onDidChangeTreeData.event;
 	private _workspaceState: vscode.Memento;
+
 	constructor(workspaceState: vscode.Memento) {
 		this._workspaceState = workspaceState;
-		this.treeData = this._workspaceState.get(WORKSPACESTATE_KEY, []);
+		// 从工作区状态中读取数据，并进行反序列化
+		const storedData = this._workspaceState.get(WORKSPACESTATE_KEY, []);
+		this.treeData = this.deserializeNode(storedData);
 	}
-	getRootNode(): MyTreeNode[] {
+	getRootNode(): PocketNode[] {
 		return this.treeData;
 	}
 
-	getTreeItem(element: MyTreeNode): vscode.TreeItem {
+	getTreeItem(element: BaseTreeNode): vscode.TreeItem {
 		if (element.contextValue === ContextValue.POCKET) {
 			element.iconPath = new vscode.ThemeIcon("folder-library");
 		} else if (element.contextValue === ContextValue.COMPARTMENT) {
 			element.iconPath = new vscode.ThemeIcon("files");
-		} else if (element.contextValue === ContextValue.DOCUMENT) {
-			element.iconPath = new vscode.ThemeIcon("file");
 		}
 		return element;
 	}
 
-	getChildren(element?: MyTreeNode): Thenable<MyTreeNode[]> {
+	getChildren(element?: BaseTreeNode): Thenable<BaseTreeNode[]> {
 		if (!element) {
 			return Promise.resolve(this.treeData);
 		}
@@ -91,7 +106,47 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		// 更新数据
 		this._onDidChangeTreeData.fire(undefined);
 		// 存储数据
-		this._workspaceState.update(WORKSPACESTATE_KEY, this.treeData);
+		const serializedData = this.serializeNode();
+		this._workspaceState.update(WORKSPACESTATE_KEY, serializedData);
+	}
+
+	// 自定义序列化方法
+	private serializeNode() {
+		return this.treeData.map((pocket) => ({
+			...pocket,
+			children: (pocket.children || []).map((compartment) => ({
+				...compartment,
+				children: (compartment.children || []).map((doc) =>
+					JSON.stringify(doc),
+				),
+			})),
+		}));
+	}
+
+	// 自定义反序列化方法
+	private deserializeNode(storedData: PocketNode[]): PocketNode[] {
+		return storedData.map((pocketData) => {
+			const pocket = new PocketNode(pocketData.label);
+			Object.assign(pocket, pocketData);
+			pocket.children = (pocketData.children || []).map((compartmentData) => {
+				const compartment = new CompartmentNode(
+					compartmentData.label as string,
+				);
+				compartment.children = (compartmentData.children || []).map(
+					(docStr) => {
+						// @ts-ignore
+						const doc = JSON.parse(docStr);
+						const docNode = new vscode.TreeItem(
+							vscode.Uri.file(doc.resourceUri.fsPath),
+						);
+						docNode.id = nanoid();
+						return docNode;
+					},
+				) as BaseTreeNode[];
+				return compartment;
+			});
+			return pocket;
+		});
 	}
 
 	async addEntry() {
@@ -99,12 +154,8 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			placeHolder: vscode.l10n.t("Enter your pocket`s name"),
 		});
 		if (value) {
-			const item = new MyTreeNode(
-				value,
-				vscode.TreeItemCollapsibleState.Collapsed,
-			);
+			const item = new PocketNode(value);
 			item.id = nanoid();
-			item.contextValue = ContextValue.POCKET;
 			this.treeData.push(item);
 			this.refresh();
 		}
@@ -113,7 +164,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 
 	async beforeAddTabs() {
 		if (this.treeData.length) {
-			const nodes = this.treeData.map((v) => v.label);
+			const nodes = this.treeData.map((v) => v.label).filter((v) => v);
 			const node = await vscode.window.showQuickPick(nodes, {
 				placeHolder: vscode.l10n.t("Choose a pocket"),
 			});
@@ -138,26 +189,20 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			return item.label === msg;
 		});
 		if (targetItem) {
-			const result: MyTreeNode[] = [];
+			const result = [];
 			const allTabs = vscode.window.tabGroups.all;
 			for (let i = 0; i < allTabs.length; i++) {
 				const splitedList = allTabs[i];
-				const compartment = new MyTreeNode(
+				const compartment = new CompartmentNode(
 					vscode.l10n.t("Group {0}", splitedList.viewColumn),
-					vscode.TreeItemCollapsibleState.Expanded,
 				);
-				compartment.contextValue = ContextValue.COMPARTMENT;
 				compartment.id = nanoid();
 
 				for (let j = 0; j < splitedList.tabs.length; j++) {
 					const tab = splitedList.tabs[j];
 					if (tab.input instanceof vscode.TabInputText) {
-						const docNode = new MyTreeNode(
-							tab.label,
-							vscode.TreeItemCollapsibleState.None,
-						);
-						docNode.contextValue = ContextValue.DOCUMENT;
-						docNode.description = tab.input.uri.fsPath;
+						console.log(tab.input.uri);
+						const docNode = new vscode.TreeItem(tab.input.uri) as BaseTreeNode;
 						docNode.id = nanoid();
 						compartment.children.push(docNode);
 					}
@@ -170,7 +215,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 		}
 	}
 
-	remove(targetItem: MyTreeNode) {
+	remove(targetItem: BaseTreeNode) {
 		for (let i = 0; i < this.treeData.length; i++) {
 			const pocket = this.treeData[i];
 			if (pocket.id === targetItem.id) {
@@ -199,7 +244,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			}
 		}
 	}
-	async openPocket(targetItem: MyTreeNode) {
+	async openPocket(targetItem: PocketNode) {
 		if (targetItem.isAutoCloseOthers) {
 			await vscode.commands.executeCommand("workbench.action.closeAllEditors");
 		}
@@ -216,7 +261,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 			targetGroup = vscode.ViewColumn.Beside;
 		}
 	}
-	renamePocket(targetItem: MyTreeNode) {
+	renamePocket(targetItem: PocketNode) {
 		vscode.window
 			.showInputBox({
 				value: targetItem.label,
@@ -229,7 +274,7 @@ export class MyTreeDataProvider implements vscode.TreeDataProvider<MyTreeNode> {
 				}
 			});
 	}
-	async linkGitBranch(node: MyTreeNode, branchesMap: Map<string, MyTreeNode>) {
+	async linkGitBranch(node: PocketNode, branchesMap: Map<string, PocketNode>) {
 		const repo = getRepo();
 		if (repo) {
 			const branches = await repo.getBranches({
