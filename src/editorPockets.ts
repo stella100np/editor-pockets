@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import type { GitExtension } from "./types/git.d.ts"; // 如果 types/git 是一个类型定义文件
 import { nanoid } from "nanoid";
+import { relative, basename, dirname } from "node:path";
 // 或者
 // contextValue枚举
 enum ContextValue {
@@ -36,26 +37,55 @@ class CompartmentNode extends vscode.TreeItem implements BaseTreeNode {
 
 // 打开文件到指定的编辑器组
 async function openFilesInGroup(
-	filePaths: (string | boolean | undefined)[],
+	resourceUris: (vscode.Uri | boolean | undefined)[],
 	group: vscode.ViewColumn | undefined,
 ) {
-	for (const filePath of filePaths) {
-		if (typeof filePath === "string") {
+	for (const resourceUri of resourceUris) {
+		if (resourceUri instanceof vscode.Uri) {
 			try {
-				// 将文件路径转换为URI
-				const uri = vscode.Uri.file(filePath);
 				// 使用指定的编辑器组打开文件
-				await vscode.window.showTextDocument(uri, {
+				await vscode.window.showTextDocument(resourceUri, {
 					viewColumn: group,
 					preview: false,
 				});
 			} catch (error) {
-				console.error(`Failed to open file ${filePath}:`, error);
+				console.error(`Failed to open file ${resourceUri.fsPath}:`, error);
 			}
 		}
 	}
 }
 
+/**
+ * 创建一个 TreeItem 并设置其 description 为给定 URI 所在文件夹的相对路径。
+ * @param uri - 文件的 URI。
+ * @returns {vscode.TreeItem} - 设置了文件夹相对路径作为 description 的 TreeItem。
+ */
+function createTreeItemWithRelativePath(uri: vscode.Uri): vscode.TreeItem {
+	// 获取当前打开的工作区文件夹列表
+	const workspaceFolders = vscode.workspace.workspaceFolders;
+	if (!workspaceFolders || workspaceFolders.length === 0) {
+		throw new Error("No workspace folder is opened.");
+	}
+
+	// 选择第一个工作区作为基准（如果有多个工作区，你可能需要更复杂的逻辑来选择）
+	const workspaceFolder = workspaceFolders[0];
+
+	// 将 URI 转换为文件系统路径
+	const absolutePath = uri.fsPath;
+
+	// 计算相对于工作区根目录的路径
+	const relativePath = relative(workspaceFolder.uri.fsPath, absolutePath);
+
+	// 获取文件夹的相对路径
+	const folderRelativePath = dirname(relativePath);
+
+	// 创建 TreeItem 并设置 label 和 description
+	const treeItem = new vscode.TreeItem(uri);
+	treeItem.description =
+		folderRelativePath === "." ? undefined : folderRelativePath;
+
+	return treeItem;
+}
 export function getRepo() {
 	const gitExtension =
 		vscode.extensions.getExtension<GitExtension>("vscode.git")?.exports;
@@ -76,12 +106,18 @@ export class MyTreeDataProvider
 		this._onDidChangeTreeData.event;
 	private _workspaceState: vscode.Memento;
 
-	constructor(workspaceState: vscode.Memento) {
-		this._workspaceState = workspaceState;
+	constructor(ctx: vscode.ExtensionContext) {
+		vscode.window.createTreeView("EditorPockets", {
+			treeDataProvider: this,
+			showCollapseAll: true,
+		});
+		this._workspaceState = ctx.workspaceState;
+		this._workspaceState.update(WORKSPACESTATE_KEY, []);
 		// 从工作区状态中读取数据，并进行反序列化
 		const storedData = this._workspaceState.get(WORKSPACESTATE_KEY, []);
 		this.treeData = this.deserializeNode(storedData);
 	}
+
 	getRootNode(): PocketNode[] {
 		return this.treeData;
 	}
@@ -202,7 +238,9 @@ export class MyTreeDataProvider
 					const tab = splitedList.tabs[j];
 					if (tab.input instanceof vscode.TabInputText) {
 						console.log(tab.input.uri);
-						const docNode = new vscode.TreeItem(tab.input.uri) as BaseTreeNode;
+						const docNode = createTreeItemWithRelativePath(
+							tab.input.uri,
+						) as BaseTreeNode;
 						docNode.id = nanoid();
 						compartment.children.push(docNode);
 					}
@@ -255,7 +293,7 @@ export class MyTreeDataProvider
 		for (let i = 0; i < targetItem.children.length; i++) {
 			const compartmentNode = targetItem.children[i];
 			await openFilesInGroup(
-				compartmentNode.children.map((v) => v.description),
+				compartmentNode.children.map((v) => v.resourceUri),
 				targetGroup,
 			);
 			targetGroup = vscode.ViewColumn.Beside;

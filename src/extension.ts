@@ -23,9 +23,11 @@ function checkNode(node: BaseTreeNode) {
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	const treeProvider = new MyTreeDataProvider(context.workspaceState);
-	const branchesMap = new Map<string, PocketNode>();
+	const treeProvider = new MyTreeDataProvider(context);
+
 	const root = treeProvider.getRootNode();
+
+	const branchesMap = new Map<string, PocketNode>();
 	for (let i = 0; i < root.length; i++) {
 		const node = root[i];
 		if (typeof node.description === "string") {
@@ -49,10 +51,6 @@ export function activate(context: vscode.ExtensionContext) {
 	}, 3000);
 
 	context.subscriptions.push(
-		vscode.window.createTreeView("EditorPockets", {
-			treeDataProvider: treeProvider,
-			showCollapseAll: true,
-		}),
 		vscode.commands.registerCommand("extension.addEntry", () => {
 			treeProvider.addEntry();
 		}),
