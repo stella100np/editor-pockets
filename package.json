@@ -28,7 +28,7 @@
 		"viewsWelcome": [
 			{
 				"view": "EditorPockets",
-				"contents": "[Add Pocket](command:extension.addEntry)"
+				"contents": "[Add Pocket](command:editor-pockets.addPocket)"
 			}
 		],
 		"menus": {
@@ -39,7 +39,7 @@
 			],
 			"view/title": [
 				{
-					"command": "extension.addEntry",
+					"command": "editor-pockets.addPocket",
 					"when": "view == EditorPockets",
 					"group": "navigation"
 				}
@@ -82,8 +82,8 @@
 				"category": "EditorPockets"
 			},
 			{
-				"command": "extension.addEntry",
-				"title": "%extension.addEntry.title%",
+				"command": "editor-pockets.addPocket",
+				"title": "%extension.addPocket.title%",
 				"category": "EditorPockets",
 				"icon": {
 					"light": "resources/light/add.svg",
