@@ -1,100 +1,87 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import {
-	MyTreeDataProvider,
-	type BaseTreeNode,
-	getRepo,
-	type PocketNode,
-} from "./editorPockets";
-
-function checkNode(node: BaseTreeNode) {
-	if (!node) {
-		vscode.window.showWarningMessage(
-			vscode.l10n.t(
-				"Please use the buttons in the explorer instead of using the commands",
-			),
-		);
-		return false;
-	}
-	return true;
-}
+import { MyTreeDataProvider } from "./editorPockets";
+import type { PocketNode, BaseTreeNode } from "./types/index";
+import { GitBranchManager } from "./utils/gitBranchManger";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	const treeProvider = new MyTreeDataProvider(context);
-
-	const root = treeProvider.getRootNode();
-
-	const branchesMap = new Map<string, PocketNode>();
-	for (let i = 0; i < root.length; i++) {
-		const node = root[i];
-		if (typeof node.description === "string") {
-			branchesMap.set(node.description, node);
-		}
-	}
-
-	setTimeout(() => {
-		const repo = getRepo();
-		let currentBranch = repo?.state.HEAD?.name;
-		repo?.state.onDidChange((e) => {
-			const newBranch = repo?.state.HEAD?.name;
-			if (newBranch && newBranch !== currentBranch) {
-				currentBranch = newBranch;
-				const node = branchesMap.get(newBranch);
-				if (node) {
-					treeProvider.openPocket(node);
-				}
-			}
-		});
-	}, 3000);
+	const gitBranchManager = new GitBranchManager(treeProvider);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand("extension.addEntry", () => {
-			treeProvider.addEntry();
+		vscode.window.registerTreeDataProvider("EditorPockets", treeProvider),
+		vscode.commands.registerCommand("editor-pockets.addPocket", () => {
+			treeProvider.addPocket();
 		}),
 		vscode.commands.registerCommand("editor-pockets.saveTabs", () =>
-			treeProvider.beforeAddTabs(),
+			treeProvider.saveTabs2Pocket(),
 		),
 		// 重命名口袋
 		vscode.commands.registerCommand(
 			"extension.renamePocket",
-			(node: PocketNode) => checkNode(node) && treeProvider.renamePocket(node),
+			async (targetItem: PocketNode | undefined) => {
+				const node = await treeProvider.checkNode(targetItem);
+				if (node) {
+					const newName = await vscode.window.showInputBox({
+						value: node.label,
+						placeHolder: vscode.l10n.t("Enter a new name for the pocket"),
+					});
+					if (newName) {
+						node.label = newName;
+						treeProvider.refresh();
+					}
+				}
+			},
 		),
 		// 删除口袋
 		vscode.commands.registerCommand(
 			"editor-pockets.remove",
-			(node: BaseTreeNode) => checkNode(node) && treeProvider.remove(node),
+			(node: BaseTreeNode) => treeProvider.remove(node),
 		),
 		vscode.commands.registerCommand(
 			"extension.openPocket",
-			(node: PocketNode) => checkNode(node) && treeProvider.openPocket(node),
+			(node: PocketNode) => treeProvider.openPocket(node),
 		),
 		vscode.commands.registerCommand(
 			"extension.linkBranch",
-			(node: PocketNode) => {
-				checkNode(node) && treeProvider.linkGitBranch(node, branchesMap);
+			async (targetItem: PocketNode | undefined) => {
+				const node = await treeProvider.checkNode(targetItem);
+				if (node) {
+					const result = await gitBranchManager.pickUpBranch();
+					console.log("result", result);
+					if (result) {
+						const { targetBranch, isAutoCloseOthers } = result;
+						node.isAutoCloseOthers = isAutoCloseOthers;
+						if (targetBranch) {
+							const oldNode = treeProvider.getNodeByGitBranch(targetBranch);
+							if (oldNode) {
+								oldNode.branch = undefined;
+							}
+							node.branch = targetBranch;
+							treeProvider.refresh();
+						}
+					}
+				}
 			},
 		),
 		vscode.commands.registerCommand(
 			"extension.unlinkBranch",
-			(node: PocketNode) => {
-				if (checkNode(node)) {
-					node.description = undefined;
+			async (targetItem: PocketNode | undefined) => {
+				const node = await treeProvider.checkNode(targetItem);
+				if (node) {
 					node.branch = undefined;
-					branchesMap.delete(node.label);
-					treeProvider.refresh();
 				}
 			},
 		),
 		vscode.commands.registerCommand(
 			"extension.togglePocketSetting",
-			(node: PocketNode) => {
-				if (checkNode(node)) {
+			async (targetItem: PocketNode | undefined) => {
+				const node = await treeProvider.checkNode(targetItem);
+				if (node) {
 					node.isAutoCloseOthers = !node.isAutoCloseOthers;
-					node.description = `🌿${node.isAutoCloseOthers ? "🚀" : ""} ${node.branch}`;
-					treeProvider.refresh();
 				}
 			},
 		),
