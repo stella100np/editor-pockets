@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import type { PocketNode } from "../types/index";
 import type { MyTreeDataProvider } from "../editorPockets";
 
 import type { GitExtension, Repository } from "../types/git.d.ts"; // 如果 types/git 是一个类型定义文件

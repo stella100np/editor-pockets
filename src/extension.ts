@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { MyTreeDataProvider } from "./editorPockets";
-import type { PocketNode, BaseTreeNode } from "./types/index";
+import type { BaseTreeNode, DocNode, PocketNode } from "./types/index";
 import { GitBranchManager } from "./utils/gitBranchManger";
 
 // This method is called when your extension is activated

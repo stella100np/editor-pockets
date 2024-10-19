@@ -1,12 +1,11 @@
 import * as vscode from "vscode";
 import {
 	type BaseTreeNode,
-	PocketNode,
 	CompartmentNode,
 	ContextValue,
 	DocNode,
+	PocketNode,
 } from "./types/index";
-import { nanoid } from "nanoid";
 
 const WORKSPACESTATE_KEY = "editorpocketstorage";
 
