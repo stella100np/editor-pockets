@@ -1,6 +1,6 @@
-import * as vscode from "vscode";
-import { relative, basename, dirname } from "node:path";
+import { dirname, relative } from "node:path";
 import { nanoid } from "nanoid";
+import * as vscode from "vscode";
 
 export enum ContextValue {
 	POCKET = "pocket",
@@ -73,8 +73,8 @@ export class CompartmentNode extends vscode.TreeItem implements BaseTreeNode {
 
 export class DocNode extends vscode.TreeItem implements BaseTreeNode {
 	public children: BaseTreeNode[] = [];
-	constructor(uri: vscode.Uri) {
-		super(uri);
+	constructor(resourceUri: vscode.Uri) {
+		super(resourceUri);
 
 		// 获取当前打开的工作区文件夹列表
 		const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -86,7 +86,7 @@ export class DocNode extends vscode.TreeItem implements BaseTreeNode {
 		const workspaceFolder = workspaceFolders[0];
 
 		// 将 URI 转换为文件系统路径
-		const absolutePath = uri.fsPath;
+		const absolutePath = resourceUri.fsPath;
 
 		// 计算相对于工作区根目录的路径
 		const relativePath = relative(workspaceFolder.uri.fsPath, absolutePath);
@@ -97,6 +97,11 @@ export class DocNode extends vscode.TreeItem implements BaseTreeNode {
 		// 设置 TreeItem 的 description
 		this.description =
 			folderRelativePath === "." ? undefined : folderRelativePath;
+		this.command = {
+			command: "vscode.open",
+			title: "Open File",
+			arguments: [resourceUri],
+		};
 		this.id = nanoid();
 	}
 }
