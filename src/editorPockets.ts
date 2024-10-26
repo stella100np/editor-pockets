@@ -21,6 +21,7 @@ async function openFilesInGroup(
 				await vscode.window.showTextDocument(resourceUri, {
 					viewColumn: group,
 					preview: false,
+					preserveFocus: true,
 				});
 			} catch (error) {
 				console.error(`Failed to open file ${resourceUri.fsPath}:`, error);
