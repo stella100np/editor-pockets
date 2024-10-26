@@ -73,6 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
 				const node = await treeProvider.checkNode(targetItem);
 				if (node) {
 					node.branch = undefined;
+					treeProvider.refresh();
 				}
 			},
 		),
@@ -82,6 +83,7 @@ export function activate(context: vscode.ExtensionContext) {
 				const node = await treeProvider.checkNode(targetItem);
 				if (node) {
 					node.isAutoCloseOthers = !node.isAutoCloseOthers;
+					treeProvider.refresh();
 				}
 			},
 		),
