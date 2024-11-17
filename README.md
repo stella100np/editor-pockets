@@ -1,5 +1,7 @@
 # Editor Pockets - Manage and Restore Open File Groups in VS Code
 
+[中文README](README.zh-CN.md)
+
 ## Overview 🌐
 
 Editor Pockets is a robust Visual Studio Code extension designed to help users manage their open editors efficiently. It allows for saving and restoring groups of open files, known as "pockets," along with associated tags for quick reference. This feature makes it particularly useful for those who handle multiple files and projects, needing to switch between different sets of documents seamlessly within a single VS Code window.
