@@ -3,7 +3,7 @@
 	"displayName": "Editor Pockets",
 	"description": "Editor Pockets - Manage and Restore Open File Groups in VS Code",
 	"author": "stella100np <zgy1453373421@outlook.com>",
-	"version": "0.0.5",
+	"version": "1.0.0",
 	"license": "GPL-3.0",
 	"icon": "./resources/icon.png",
 	"engines": {
