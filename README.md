@@ -6,15 +6,15 @@
 
 Editor Pockets is a robust Visual Studio Code extension designed to help users manage their open editors efficiently. It allows for saving and restoring groups of open files, known as "pockets," along with associated tags for quick reference. This feature makes it particularly useful for those who handle multiple files and projects, needing to switch between different sets of documents seamlessly within a single VS Code window.
 
-## Features 🚀
+## Features ⚡
 
-- 📝 **Manual Logging**: The extension allows you to manually log the opened document editors within Visual Studio Code by triggering a command from the VSCode tabs. 🛠️
-- 🔃 **Sequential Restore**: Easily restore previously logged document editors in the order they were recorded. ⏭️
-- 🏷️ **Tagging System**: Each restored document editor can be associated with a tag, enabling efficient categorization and management of your files. 🗂️
+- 📝 **Manual Logging**: The extension allows you to manually log the opened document editors within Visual Studio Code by triggering a command from the VSCode tabs.
+- 🔄 **Sequential Restore**: Easily restore previously logged document editors in the order they were recorded.
+- 🏷️ **Tagging System**: Each restored document editor can be associated with a tag, enabling efficient categorization and management of your files.
 
-## Getting Started 🏁
+## Getting Started 💫
 
-### Installation 🛠️
+### Installation 📥
 
 1. Download the extension from the Visual Studio Code Marketplace.
 2. Install the extension directly from within Visual Studio Code by navigating to the Extensions panel and searching for "editorPockets".
@@ -44,7 +44,7 @@ Editor Pockets is a robust Visual Studio Code extension designed to help users m
    - When switching to the specified branch from another, this plugin will automatically open the required file editors, allowing you to quickly resume your work
 
 
-## API and Dependencies 🛠️
+## API and Dependencies ⚙️
 
 The extension leverages the following technologies:
 
@@ -52,7 +52,7 @@ The extension leverages the following technologies:
 - **[Esbuild](https://github.com/evanw/esbuild)**: Used for bundling the extension.
 - **[TypeScript](https://www.typescriptlang.org/)**: The programming language in which the extension is developed.
 
-## Known Issues and Limitations 🚧
+## Known Issues and Limitations ⚠️
 
 - The extension currently does not support automatic logging for multiple workspace folders.
 - Tags must be manually assigned during the restoration process of document editors.
@@ -66,7 +66,7 @@ The extension leverages the following technologies:
 
 Contributions are welcome! If you have ideas for improving the extension, please open an issue or submit a pull request.
 
-## License 📜
+## License 📄
 
 This project is licensed under the terms of the GNU GPL v3 license.See the [LICENSE file](LICENSE) for details.
 
