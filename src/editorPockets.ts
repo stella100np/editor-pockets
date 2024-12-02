@@ -124,7 +124,10 @@ export class MyTreeDataProvider
 
 	private async _pickUpPocket() {
 		if (this.treeData.length === 0) {
-			await this.addPocket();
+			const pocketName = await this.addPocket();
+			if (!pocketName) {
+				return;
+			}
 		}
 		const nodes = this.treeData.map((v) => v.label).filter((v) => v);
 		const selectedLabel = await vscode.window.showQuickPick(nodes, {
@@ -142,14 +145,6 @@ export class MyTreeDataProvider
 	}
 
 	async saveTabs2Pocket() {
-		const activeEditor = vscode.window.activeTextEditor;
-		if (!activeEditor) {
-			vscode.window.showErrorMessage(
-				vscode.l10n.t("No editor is currently active!"),
-			);
-			return;
-		}
-
 		// biome-ignore lint/style/useConst: <explanation>
 		let targetItem = await this.checkNode();
 		if (targetItem) {
