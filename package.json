@@ -77,6 +77,52 @@
 				}
 			]
 		},
+		"walkthroughs": [
+			{
+				"id": "editorPocketsWalkthrough",
+				"title": "%walkthrough.title%",
+				"description": "%walkthrough.description%",
+				"steps": [
+					{
+						"id": "addPocket",
+						"title": "%walkthrough.addPocket.title%",
+						"description": "%walkthrough.addPocket.description%",
+						"media": {
+							"image": "resources/walkthrough/add-pocket.png",
+							"altText": "%walkthrough.addPocket.media.altText%"
+						},
+						"completionEvents": ["onCommand:editor-pockets.addPocket"]
+					},
+					{
+						"id": "openEditors",
+						"title": "%walkthrough.openEditors.title%",
+						"description": "%walkthrough.openEditors.description%",
+						"media": {
+							"markdown": "resources/walkthrough/open-editors.md"
+						}
+					},
+					{
+						"id": "saveTabs",
+						"title": "%walkthrough.saveTabs.title%",
+						"description": "%walkthrough.saveTabs.description%",
+						"media": {
+							"image": "resources/walkthrough/save-tabs.png",
+							"altText": "%walkthrough.saveTabs.media.altText%"
+						},
+						"completionEvents": ["onCommand:editor-pockets.saveTabs"]
+					},
+					{
+						"id": "managePockets",
+						"title": "%walkthrough.managePockets.title%",
+						"description": "%walkthrough.managePockets.description%",
+						"media": {
+							"image": "resources/walkthrough/manage-pockets.png",
+							"altText": "%walkthrough.managePockets.media.altText%"
+						}
+					}
+				]
+			}
+		],
 		"commands": [
 			{
 				"command": "editor-pockets.saveTabs",

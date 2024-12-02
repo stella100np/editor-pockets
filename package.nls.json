@@ -7,5 +7,19 @@
 	"extension.linkBranch.title": " Related to a branch...",
 	"extension.unlinkBranch.title": " Unlink branch",
 	"extension.togglePocketSetting.title": "Close/Keep previous editor on switch",
-	"editor_pockets": "Editor Pockets"
+	"editor_pockets": "Editor Pockets",
+	"walkthrough.title": "Getting Started with Editor Pockets",
+	"walkthrough.description": "Learn how to use Editor Pockets to manage your workspace efficiently",
+	"walkthrough.addPocket.title": "Create Your First Pocket",
+	"walkthrough.addPocket.description": "Click the '+' button in the Editor Pockets view to create a new pocket. A pocket helps you save and organize groups of files you frequently work with.\n[Add Pocket](command:editor-pockets.addPocket)",
+	"walkthrough.addPocket.media.altText": "Adding a new pocket",
+	"walkthrough.openEditors.title": "Open Multiple Files",
+	"walkthrough.openEditors.description": "Open several files that you frequently work with together. You can open files from the file explorer or use quick open (Ctrl+P) to find and open files quickly.",
+	"walkthrough.openEditors.media.altText": "Opening multiple editor tabs",
+	"walkthrough.saveTabs.title": "Save Open Tabs",
+	"walkthrough.saveTabs.description": "Now that you have multiple files open, click the save button in the editor title area to save all your open tabs into a pocket. This helps you quickly restore your workspace later.\n[Save Tabs](command:editor-pockets.saveTabs)",
+	"walkthrough.saveTabs.media.altText": "Saving open tabs to a pocket",
+	"walkthrough.managePockets.title": "Manage Your Pockets",
+	"walkthrough.managePockets.description": "Right-click on any pocket to rename, delete, or link it to a git branch. You can also open all files in a pocket with a single click.",
+	"walkthrough.managePockets.media.altText": "Managing pockets"
 }
