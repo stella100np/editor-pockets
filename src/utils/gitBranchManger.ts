@@ -14,6 +14,8 @@ export class GitBranchManager {
 		if (gitExtension) {
 			// 如果 Git 扩展已经激活，则直接初始化
 			if (gitExtension.isActive) {
+				const gitAPI = gitExtension.exports.getAPI(1);
+				this._repo = gitAPI.repositories[0];
 				this.initializeBranchListener();
 			} else {
 				// 否则，在 Git 扩展激活后再初始化
