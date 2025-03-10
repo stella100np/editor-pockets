@@ -11,8 +11,8 @@ export function activate(context: vscode.ExtensionContext) {
 	const treeProvider = new MyTreeDataProvider(context);
 	const gitBranchManager = new GitBranchManager(treeProvider);
 
+
 	context.subscriptions.push(
-		vscode.window.registerTreeDataProvider("EditorPockets", treeProvider),
 		vscode.commands.registerCommand("editor-pockets.addPocket", () => {
 			treeProvider.addPocket();
 		}),

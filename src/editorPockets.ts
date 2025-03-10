@@ -31,7 +31,9 @@ async function openFilesInGroup(
 }
 
 export class MyTreeDataProvider
-	implements vscode.TreeDataProvider<BaseTreeNode>
+	implements
+		vscode.TreeDataProvider<BaseTreeNode>,
+		vscode.TreeDragAndDropController<BaseTreeNode>
 {
 	private treeData: PocketNode[] = [];
 
@@ -41,10 +43,18 @@ export class MyTreeDataProvider
 		this._onDidChangeTreeData.event;
 	private _workspaceState: vscode.Memento;
 
+	dropMimeTypes = ["application/vnd.code.tree.editorpockets"];
+	dragMimeTypes = ["application/vnd.code.tree.editorpockets"];
+
 	constructor(ctx: vscode.ExtensionContext) {
+		const view = vscode.window.createTreeView("EditorPockets", {
+			treeDataProvider: this,
+			showCollapseAll: true,
+			canSelectMany: true,
+			dragAndDropController: this,
+		});
+		ctx.subscriptions.push(view);
 		this._workspaceState = ctx.workspaceState;
-		// 从工作区状态中读取数据，并进行反序列化
-		// this._workspaceState.update(WORKSPACESTATE_KEY, []);
 		const storedData = this._workspaceState.get(WORKSPACESTATE_KEY, []);
 		this.treeData = this.deserializeNode(storedData);
 	}
@@ -110,6 +120,7 @@ export class MyTreeDataProvider
 			return pocket;
 		});
 	}
+
 	public async addPocket() {
 		const value = await vscode.window.showInputBox({
 			placeHolder: vscode.l10n.t("Enter your pocket`s name"),
@@ -226,5 +237,106 @@ export class MyTreeDataProvider
 
 	getNodeByGitBranch(branchName: string) {
 		return this.treeData.find((v) => v.branch === branchName);
+	}
+
+	private _getParent(node: BaseTreeNode): BaseTreeNode | undefined {
+		for (const pocket of this.treeData) {
+			if (pocket.id === node.id) {
+				return undefined; // 如果 node 是根节点，则没有父节点
+			}
+			for (const compartment of pocket.children) {
+				if (compartment.id === node.id) {
+					return pocket; // 找到 node 的父节点是 pocket
+				}
+				for (const docNode of compartment.children) {
+					if (docNode.id === node.id) {
+						return compartment; // 找到 node 的父节点是 compartment
+					}
+				}
+			}
+		}
+		return undefined; // 如果没有找到父节点，返回 undefined
+	}
+
+	handleDrag(
+		source: readonly BaseTreeNode[],
+		dataTransfer: vscode.DataTransfer,
+	): void {
+		console.log("source", source);
+		dataTransfer.set(
+			"application/vnd.code.tree.editorpockets",
+			new vscode.DataTransferItem(source),
+		);
+	}
+
+	async handleDrop(
+		target: BaseTreeNode | undefined,
+		dataTransfer: vscode.DataTransfer,
+	): Promise<void> {
+		const transferItem = dataTransfer.get(
+			"application/vnd.code.tree.editorpockets",
+		);
+		console.log("transferItem", transferItem);
+		if (!transferItem) {
+			return;
+		}
+
+		const sources = transferItem.value as BaseTreeNode[];
+		if (!sources || sources.length === 0) {
+			return;
+		}
+
+		// Handle drop based on target and source types
+		for (const source of sources) {
+			// Remove from original location
+			if (target) {
+				if (target instanceof PocketNode) {
+					if (source instanceof PocketNode) {
+						// 找到target位置，并将source放于下方
+						const targetIndex = this.treeData.findIndex(
+							(pocket) => pocket.id === target.id,
+						);
+						if (targetIndex !== -1) {
+							this.remove(source);
+							this.treeData.splice(targetIndex + 1, 0, source);
+						}
+					} else if (source instanceof CompartmentNode) {
+						this.remove(source);
+						target.children.push(source);
+					}
+				} else if (target instanceof CompartmentNode) {
+					if (source instanceof CompartmentNode) {
+						const parent = this._getParent(target);
+						if (parent) {
+							// 找到target位置，并将source放于下方
+							this.remove(source);
+							parent.children.splice(
+								parent.children.indexOf(target) + 1,
+								0,
+								source,
+							);
+						}
+					} else if (source instanceof DocNode) {
+						this.remove(source);
+						target.children.push(source);
+					}
+				} else if (target instanceof DocNode) {
+					if (source instanceof DocNode) {
+						const parent = this._getParent(target);
+						if (parent) {
+							// 找到target位置，并将source放于下方
+							this.remove(source);
+							parent.children.splice(
+								parent.children.indexOf(target) + 1,
+								0,
+								source,
+							);
+						}
+					}
+				}
+			}
+		}
+
+		this.refresh();
 	}
 }
