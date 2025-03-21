@@ -141,10 +141,21 @@ export class MyTreeDataProvider
 			}
 		}
 		const nodes = this.treeData.map((v) => v.label).filter((v) => v);
-		const selectedLabel = await vscode.window.showQuickPick(nodes, {
+		const label = `$(add) ${vscode.l10n.t("Create a new pocket")}`;
+		const items: vscode.QuickPickItem[] = [
+			{
+				label,
+			},
+			{ label: "", kind: vscode.QuickPickItemKind.Separator },
+		];
+		items.push(...nodes.map((v) => ({ label: v })));
+		const selectedLabel = await vscode.window.showQuickPick(items, {
 			placeHolder: vscode.l10n.t("Choose a pocket"),
 		});
-		return selectedLabel;
+		if (selectedLabel?.label === label) {
+			return await this.addPocket();
+		}
+		return selectedLabel?.label;
 	}
 
 	async checkNode(node?: PocketNode) {
