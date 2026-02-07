@@ -1,77 +1,112 @@
-# Editor Pockets - Manage and Restore Open File Groups in VS Code
+# Editor Pockets / 编辑器口袋
 
-[中文README](README.zh-CN.md)
+[English](./README.en.md) | 简体中文
 
-## Overview 🌐
+**Editor Pockets** 是一个 VS Code 扩展，用于管理和快速恢复保存的文件组（"口袋"），帮助你快速打开和访问之前保持的特定工作区文件。
 
-Editor Pockets is a robust Visual Studio Code extension designed to help users manage their open editors efficiently. It allows for saving and restoring groups of open files, known as "pockets," along with associated tags for quick reference. This feature makes it particularly useful for those who handle multiple files and projects, needing to switch between different sets of documents seamlessly within a single VS Code window.
+## ✨ 功能特性
 
-## Features ⚡
+- **保存文件组**：将当前打开的文件保存为"口袋"，方便后续快速访问
+- **快速恢复**：一键打开保存的文件组，恢复之前的工作状态
+- **Git 分支绑定**：将口袋与 Git 分支关联，切换分支时自动打开对应的文件组
+- **拖拽操作**：支持直接拖拽文件到口袋中进行保存和管理
+- **多国语言支持**：支持中文、英文、法文等多种语言界面
 
-- 📝 **Manual Logging**: The extension allows you to manually log the opened document editors within Visual Studio Code by triggering a command from the VSCode tabs.
-- 🔄 **Sequential Restore**: Easily restore previously logged document editors in the order they were recorded.
-- 🏷️ **Tagging System**: Each restored document editor can be associated with a tag, enabling efficient categorization and management of your files.
+## 📦 安装
 
-## Getting Started 💫
+### 从 VS Code 市场安装
 
-### Installation 📥
+1. 打开 VS Code
+2. 点击左侧活动栏的扩展图标（或按 `Ctrl+Shift+X`）
+3. 搜索 "Editor Pockets"
+4. 点击安装按钮
 
-1. Download the extension from the Visual Studio Code Marketplace.
-2. Install the extension directly from within Visual Studio Code by navigating to the Extensions panel and searching for "editorPockets".
+### 从 VSIX 文件安装
 
-### Usage 📖
+1. 下载最新的 `.vsix` 文件
+2. 在 VS Code 中按 `Ctrl+Shift+P`，输入 "Extensions: Install from VSIX..."
+3. 选择下载的 `.vsix` 文件
 
-#### Basic Workflow
-1. Create a New Pocket
-2. Initiate one or more VSCode file editor windows
-3. Save Current Editors
+## 🚀 快速开始
 
-   3.1 Utilize commands on the tabs
+1. 安装扩展后，在 VS Code 左侧资源管理器的上方会看到 **Editor Pockets** 视图
+2. 点击视图标题中的 **+** 按钮（或使用命令面板中的 `Editor Pockets: Add Pocket` 命令）
+3. 输入口袋名称，当前打开的文件将被保存到该口袋中
+4. 点击口袋名称即可快速打开保存的文件组
 
-   3.2 Save the currently open file editors into a specific pocket
+### 使用 Git 分支绑定
 
-4. Continue Editing and Update
+1. 在口袋上右键，选择 **Link Branch**
+2. 选择要绑定的 Git 分支
+3. 切换到该分支时，会自动打开对应的文件组
 
-   4.1 Proceed with document editing work
+## 📖 详细使用说明
 
-   4.2 When intending to update the saved file editors
-   
-   4.3 Use the same command button to achieve the update
+### 命令面板命令
 
+按 `Ctrl+Shift+P`（Windows/Linux）或 `Cmd+Shift+P`（Mac）打开命令面板，可以使用以下命令：
 
-#### Advanced Workflow
-   - you can link a particular "pocket" to a Git branch. 
-   - When switching to the specified branch from another, this plugin will automatically open the required file editors, allowing you to quickly resume your work
+- `Editor Pockets: Save Tabs` - 保存当前打开的文件到新口袋
+- `Editor Pockets: Add Pocket` - 创建新口袋
+- `Editor Pockets: Open Pocket` - 打开口袋中的文件
+- `Editor Pockets: Rename Pocket` - 重命名口袋
+- `Editor Pockets: Remove Pocket` - 删除口袋
+- `Editor Pockets: Link Branch` - 将口袋与 Git 分支关联
+- `Editor Pockets: Unlink Branch` - 解除口袋与分支的关联
+- `Editor Pockets: Toggle Auto Close Others` - 切换是否在打开口袋时自动关闭其他编辑器
 
+### 右键菜单操作
 
-## API and Dependencies ⚙️
+在 Editor Pockets 视图中，右键点击口袋可以访问所有操作命令。
 
-The extension leverages the following technologies:
+## 🔧 配置选项
 
-- **[Visual Studio Code API](https://code.visualstudio.com/)**: For seamless integration with the editor and managing document editors.
-- **[Esbuild](https://github.com/evanw/esbuild)**: Used for bundling the extension.
-- **[TypeScript](https://www.typescriptlang.org/)**: The programming language in which the extension is developed.
+扩展提供以下设置（在设置中搜索 "Editor Pockets"）：
 
-## Known Issues and Limitations ⚠️
+- `editorPockets.autoCloseOthers`：打开口袋时是否自动关闭其他编辑器（默认：false）
+- `editorPockets.defaultPocketName`：新口袋的默认名称格式
 
-- The extension currently does not support automatic logging for multiple workspace folders.
-- Tags must be manually assigned during the restoration process of document editors.
+## 🤝 贡献
 
-## Roadmap 🗺️
-- [ ] Implement support for automatic logging across multiple workspace folders.
-- [ ] Drag and drop a tree item.
-- [ ] Enhance the restore functionality to include saved editor layouts and states.
+欢迎贡献代码、报告问题或提出建议！
 
-## Contributing 🤝
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
 
-Contributions are welcome! If you have ideas for improving the extension, please open an issue or submit a pull request.
+### 开发环境设置
 
-## License 📄
+```bash
+# 克隆仓库
+git clone https://github.com/stella100np/editor-pockets.git
+cd editor-pockets
 
-This project is licensed under the terms of the GNU GPL v3 license.See the [LICENSE file](LICENSE) for details.
+# 安装依赖
+pnpm install
+
+# 编译扩展
+pnpm run compile
+
+# 启动调试
+按 F5 在 VS Code 中打开新窗口进行测试
+```
+
+## 📄 许可证
+
+本项目采用 [GPL-3.0](LICENSE) 许可证。
+
+## 🔗 相关链接
+
+- [GitHub 仓库](https://github.com/stella100np/editor-pockets)
+- [VS Code 市场页面](https://marketplace.visualstudio.com/items?itemName=stella100np.editor-pockets)
+- [问题反馈](https://github.com/stella100np/editor-pockets/issues)
+
+## 🙏 致谢
+
+感谢所有为本项目做出贡献的开发者！
 
 ---
 
-For any further queries or support, feel free to reach out to the extension maintainer at [your contact information].
-
-Happy coding with Editor Pockets!
+**享受使用 Editor Pockets 提升你的工作效率！** 🎉
