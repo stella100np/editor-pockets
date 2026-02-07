@@ -1,6 +1,7 @@
 {
 	"Enter your pocket`s name": "请输入口袋的名字",
 	"Choose a pocket": "选择一个口袋",
+	"Create a new pocket": "创建新口袋",
 	"No editor is currently active!": "当前没有活跃的编辑器！",
 	"Please use the buttons in the explorer instead of using the commands": "请使用资源管理器中的按钮，而不是使用命令",
 	"Enter a new name for the pocket": "输入口袋的新名字",
