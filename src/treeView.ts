@@ -178,6 +178,7 @@ export class MyTreeDataProvider
 				targetItem.children = result;
 			}
 			this.refresh();
+			this._view.reveal(targetItem, { expand: true });
 		}
 	}
 
@@ -249,6 +250,10 @@ export class MyTreeDataProvider
 
 	getNodeByGitBranch(branchName: string) {
 		return this.treeData.find((v) => v.branch === branchName);
+	}
+
+	getParent(element: BaseTreeNode): BaseTreeNode | undefined {
+		return this._getParent(element);
 	}
 
 	private _getParent(node: BaseTreeNode): BaseTreeNode | undefined {
