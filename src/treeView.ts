@@ -109,25 +109,35 @@ export class MyTreeDataProvider
 	async saveTabs2Pocket() {
 		const targetItem = await this.checkNode();
 		if (targetItem) {
-			const result = [];
 			const allTabs = vscode.window.tabGroups.all;
-			for (let i = 0; i < allTabs.length; i++) {
-				const splitedList = allTabs[i];
-				const group = new EditorGroupNode(
-					vscode.l10n.t("Group {0}", splitedList.viewColumn),
-				);
 
-				for (let j = 0; j < splitedList.tabs.length; j++) {
-					const tab = splitedList.tabs[j];
+			if (allTabs.length === 1) {
+				// 只有一个 tab group（未拆分编辑器栏），文档直接放在口袋下
+				const docs: DocNode[] = [];
+				for (const tab of allTabs[0].tabs) {
 					if (tab.input instanceof vscode.TabInputText) {
-						const docNode = new DocNode(tab.input.uri);
-						group.children.push(docNode);
+						docs.push(new DocNode(tab.input.uri));
 					}
 				}
-				result.push(group);
-			}
+				targetItem.children = docs;
+			} else {
+				// 有多个 tab group（拆分了编辑器），保留 group 层级
+				const result: EditorGroupNode[] = [];
+				for (const splitedList of allTabs) {
+					const group = new EditorGroupNode(
+						vscode.l10n.t("Group {0}", splitedList.viewColumn),
+					);
 
-			targetItem.children = result;
+					for (const tab of splitedList.tabs) {
+						if (tab.input instanceof vscode.TabInputText) {
+							const docNode = new DocNode(tab.input.uri);
+							group.children.push(docNode);
+						}
+					}
+					result.push(group);
+				}
+				targetItem.children = result;
+			}
 			this.refresh();
 		}
 	}
@@ -153,13 +163,16 @@ export class MyTreeDataProvider
 				return { parent: this.treeData, index: i };
 			}
 			for (let j = 0; j < pocket.children.length; j++) {
-				const group = pocket.children[j];
-				if (group.id === id) {
+				const child = pocket.children[j];
+				if (child.id === id) {
 					return { parent: pocket.children, index: j };
 				}
-				for (let k = 0; k < group.children.length; k++) {
-					if (group.children[k].id === id) {
-						return { parent: group.children, index: k };
+				// 仅当是 EditorGroup 时，才在其 children 中继续查找
+				if (child instanceof EditorGroupNode) {
+					for (let k = 0; k < child.children.length; k++) {
+						if (child.children[k].id === id) {
+							return { parent: child.children, index: k };
+						}
 					}
 				}
 			}
@@ -178,12 +191,18 @@ export class MyTreeDataProvider
 			let targetGroup = vscode.window.activeTextEditor
 				? vscode.window.activeTextEditor.viewColumn
 				: undefined;
-			for (let i = 0; i < node.children.length; i++) {
-				const groupNode = node.children[i];
-				await openFilesInGroup(
-					groupNode.children.map((v) => v.resourceUri),
-					targetGroup,
-				);
+			for (const child of node.children) {
+				if (child instanceof EditorGroupNode) {
+					await openFilesInGroup(
+						child.children.map((v) => v.resourceUri),
+						targetGroup,
+					);
+				} else if (child instanceof DocNode) {
+					await openFilesInGroup(
+						[child.resourceUri],
+						targetGroup,
+					);
+				}
 				targetGroup = vscode.ViewColumn.Beside;
 			}
 		}
@@ -198,13 +217,16 @@ export class MyTreeDataProvider
 			if (pocket.id === node.id) {
 				return undefined;
 			}
-			for (const group of pocket.children) {
-				if (group.id === node.id) {
+			for (const child of pocket.children) {
+				if (child.id === node.id) {
 					return pocket;
 				}
-				for (const docNode of group.children) {
-					if (docNode.id === node.id) {
-						return group;
+				// 仅当是 EditorGroup 时，才在其 children 中查找
+				if (child instanceof EditorGroupNode) {
+					for (const docNode of child.children) {
+						if (docNode.id === node.id) {
+							return child;
+						}
 					}
 				}
 			}
@@ -250,6 +272,10 @@ export class MyTreeDataProvider
 							this.treeData.splice(targetIndex + 1, 0, source);
 						}
 					} else if (source instanceof EditorGroupNode) {
+						this.remove(source);
+						target.children.push(source);
+					} else if (source instanceof DocNode) {
+						// 文档直接拖到口袋下（无 group 层级）
 						this.remove(source);
 						target.children.push(source);
 					}
