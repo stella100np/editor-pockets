@@ -1,34 +1,10 @@
 import * as vscode from "vscode";
-import {
-	type BaseTreeNode,
-	CompartmentNode,
-	ContextValue,
-	DocNode,
-	PocketNode,
-} from "./types/index";
+import { DocNode, EditorGroupNode, PocketNode } from "./models/nodes";
+import { deserializePockets, serializePockets } from "./storage";
+import { type BaseTreeNode, ContextValue } from "./types/index";
+import { openFilesInGroup } from "./utils/help";
 
 const WORKSPACESTATE_KEY = "editorpocketstorage";
-
-// 打开文件到指定的编辑器组
-async function openFilesInGroup(
-	resourceUris: (vscode.Uri | boolean | undefined)[],
-	group: vscode.ViewColumn | undefined,
-) {
-	for (const resourceUri of resourceUris) {
-		if (resourceUri instanceof vscode.Uri) {
-			try {
-				// 使用指定的编辑器组打开文件
-				await vscode.window.showTextDocument(resourceUri, {
-					viewColumn: group,
-					preview: false,
-					preserveFocus: true,
-				});
-			} catch (error) {
-				console.error(`Failed to open file ${resourceUri.fsPath}:`, error);
-			}
-		}
-	}
-}
 
 export class MyTreeDataProvider
 	implements
@@ -56,7 +32,7 @@ export class MyTreeDataProvider
 		ctx.subscriptions.push(view);
 		this._workspaceState = ctx.workspaceState;
 		const storedData = this._workspaceState.get(WORKSPACESTATE_KEY, []);
-		this.treeData = this.deserializeNode(storedData);
+		this.treeData = deserializePockets(storedData);
 	}
 
 	getRootNode(): PocketNode[] {
@@ -66,7 +42,7 @@ export class MyTreeDataProvider
 	getTreeItem(element: BaseTreeNode): vscode.TreeItem {
 		if (element.contextValue === ContextValue.POCKET) {
 			element.iconPath = new vscode.ThemeIcon("folder-library");
-		} else if (element.contextValue === ContextValue.COMPARTMENT) {
+		} else if (element.contextValue === ContextValue.EDITOR_GROUP) {
 			element.iconPath = new vscode.ThemeIcon("files");
 		}
 		return element;
@@ -80,45 +56,9 @@ export class MyTreeDataProvider
 	}
 
 	refresh() {
-		// 更新数据
 		this._onDidChangeTreeData.fire(undefined);
-		// 存储数据
-		const serializedData = this.serializeNode();
+		const serializedData = serializePockets(this.treeData);
 		this._workspaceState.update(WORKSPACESTATE_KEY, serializedData);
-	}
-
-	// 自定义序列化方法
-	private serializeNode() {
-		return this.treeData.map((pocket) => ({
-			...pocket,
-			children: (pocket.children || []).map((compartment) => ({
-				...compartment,
-				children: (compartment.children || []).map(
-					(doc) => doc.resourceUri?.fsPath,
-				),
-			})),
-		}));
-	}
-
-	// 自定义反序列化方法
-	private deserializeNode(storedData: PocketNode[]): PocketNode[] {
-		return storedData.map((pocketData) => {
-			const pocket = new PocketNode(pocketData.label);
-			Object.assign(pocket, pocketData);
-			pocket.children = (pocketData.children || []).map((compartmentData) => {
-				const compartment = new CompartmentNode(
-					compartmentData.label as string,
-				);
-				compartment.children = (compartmentData.children || []).map(
-					(docStr) => {
-						// @ts-ignore
-						return new DocNode(vscode.Uri.file(docStr));
-					},
-				) as BaseTreeNode[];
-				return compartment;
-			});
-			return pocket;
-		});
 	}
 
 	public async addPocket() {
@@ -167,14 +107,13 @@ export class MyTreeDataProvider
 	}
 
 	async saveTabs2Pocket() {
-		// biome-ignore lint/style/useConst: <explanation>
-		let targetItem = await this.checkNode();
+		const targetItem = await this.checkNode();
 		if (targetItem) {
 			const result = [];
 			const allTabs = vscode.window.tabGroups.all;
 			for (let i = 0; i < allTabs.length; i++) {
 				const splitedList = allTabs[i];
-				const compartment = new CompartmentNode(
+				const group = new EditorGroupNode(
 					vscode.l10n.t("Group {0}", splitedList.viewColumn),
 				);
 
@@ -182,10 +121,10 @@ export class MyTreeDataProvider
 					const tab = splitedList.tabs[j];
 					if (tab.input instanceof vscode.TabInputText) {
 						const docNode = new DocNode(tab.input.uri);
-						compartment.children.push(docNode);
+						group.children.push(docNode);
 					}
 				}
-				result.push(compartment);
+				result.push(group);
 			}
 
 			targetItem.children = result;
@@ -194,33 +133,38 @@ export class MyTreeDataProvider
 	}
 
 	remove(targetItem: BaseTreeNode) {
+		if (!targetItem.id) {
+			return;
+		}
+		const location = this._findNodeLocation(targetItem.id);
+		if (location) {
+			location.parent.splice(location.index, 1);
+			this.refresh();
+		}
+	}
+
+	// 构建节点 id → { parent数组, index } 的索引，实现 O(1) 定位
+	private _findNodeLocation(
+		id: string,
+	): { parent: BaseTreeNode[]; index: number } | undefined {
 		for (let i = 0; i < this.treeData.length; i++) {
 			const pocket = this.treeData[i];
-			if (pocket.id === targetItem.id) {
-				// 删除
-				this.treeData.splice(i, 1);
-				this.refresh();
-				return;
+			if (pocket.id === id) {
+				return { parent: this.treeData, index: i };
 			}
 			for (let j = 0; j < pocket.children.length; j++) {
-				const compartment = pocket.children[j];
-				if (compartment.id === targetItem.id) {
-					// 删除
-					pocket.children.splice(j, 1);
-					this.refresh();
-					return;
+				const group = pocket.children[j];
+				if (group.id === id) {
+					return { parent: pocket.children, index: j };
 				}
-				for (let k = 0; k < compartment.children.length; k++) {
-					const docNode = compartment.children[k];
-					if (docNode.id === targetItem.id) {
-						// 删除
-						compartment.children.splice(k, 1);
-						this.refresh();
-						return;
+				for (let k = 0; k < group.children.length; k++) {
+					if (group.children[k].id === id) {
+						return { parent: group.children, index: k };
 					}
 				}
 			}
 		}
+		return undefined;
 	}
 
 	async openPocket(targetItem?: PocketNode) {
@@ -231,14 +175,13 @@ export class MyTreeDataProvider
 					"workbench.action.closeAllEditors",
 				);
 			}
-			// 确定目标编辑器组
 			let targetGroup = vscode.window.activeTextEditor
 				? vscode.window.activeTextEditor.viewColumn
 				: undefined;
 			for (let i = 0; i < node.children.length; i++) {
-				const compartmentNode = node.children[i];
+				const groupNode = node.children[i];
 				await openFilesInGroup(
-					compartmentNode.children.map((v) => v.resourceUri),
+					groupNode.children.map((v) => v.resourceUri),
 					targetGroup,
 				);
 				targetGroup = vscode.ViewColumn.Beside;
@@ -253,27 +196,26 @@ export class MyTreeDataProvider
 	private _getParent(node: BaseTreeNode): BaseTreeNode | undefined {
 		for (const pocket of this.treeData) {
 			if (pocket.id === node.id) {
-				return undefined; // 如果 node 是根节点，则没有父节点
+				return undefined;
 			}
-			for (const compartment of pocket.children) {
-				if (compartment.id === node.id) {
-					return pocket; // 找到 node 的父节点是 pocket
+			for (const group of pocket.children) {
+				if (group.id === node.id) {
+					return pocket;
 				}
-				for (const docNode of compartment.children) {
+				for (const docNode of group.children) {
 					if (docNode.id === node.id) {
-						return compartment; // 找到 node 的父节点是 compartment
+						return group;
 					}
 				}
 			}
 		}
-		return undefined; // 如果没有找到父节点，返回 undefined
+		return undefined;
 	}
 
 	handleDrag(
 		source: readonly BaseTreeNode[],
 		dataTransfer: vscode.DataTransfer,
 	): void {
-		console.log("source", source);
 		dataTransfer.set(
 			"application/vnd.code.tree.editorpockets",
 			new vscode.DataTransferItem(source),
@@ -287,7 +229,6 @@ export class MyTreeDataProvider
 		const transferItem = dataTransfer.get(
 			"application/vnd.code.tree.editorpockets",
 		);
-		console.log("transferItem", transferItem);
 		if (!transferItem) {
 			return;
 		}
@@ -297,13 +238,10 @@ export class MyTreeDataProvider
 			return;
 		}
 
-		// Handle drop based on target and source types
 		for (const source of sources) {
-			// Remove from original location
 			if (target) {
 				if (target instanceof PocketNode) {
 					if (source instanceof PocketNode) {
-						// 找到target位置，并将source放于下方
 						const targetIndex = this.treeData.findIndex(
 							(pocket) => pocket.id === target.id,
 						);
@@ -311,15 +249,14 @@ export class MyTreeDataProvider
 							this.remove(source);
 							this.treeData.splice(targetIndex + 1, 0, source);
 						}
-					} else if (source instanceof CompartmentNode) {
+					} else if (source instanceof EditorGroupNode) {
 						this.remove(source);
 						target.children.push(source);
 					}
-				} else if (target instanceof CompartmentNode) {
-					if (source instanceof CompartmentNode) {
+				} else if (target instanceof EditorGroupNode) {
+					if (source instanceof EditorGroupNode) {
 						const parent = this._getParent(target);
 						if (parent) {
-							// 找到target位置，并将source放于下方
 							this.remove(source);
 							parent.children.splice(
 								parent.children.indexOf(target) + 1,
@@ -335,7 +272,6 @@ export class MyTreeDataProvider
 					if (source instanceof DocNode) {
 						const parent = this._getParent(target);
 						if (parent) {
-							// 找到target位置，并将source放于下方
 							this.remove(source);
 							parent.children.splice(
 								parent.children.indexOf(target) + 1,

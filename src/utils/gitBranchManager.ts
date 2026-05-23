@@ -1,24 +1,24 @@
 import * as vscode from "vscode";
-import type { MyTreeDataProvider } from "../editorPockets";
+import type { MyTreeDataProvider } from "../treeView";
+import type { GitExtension, Repository } from "../types/git";
 
-import type { GitExtension, Repository } from "../types/git.d.ts"; // 如果 types/git 是一个类型定义文件
 export class GitBranchManager {
 	private _repo: Repository | undefined;
 	private treeProvider: MyTreeDataProvider;
 
 	constructor(treeProvider: MyTreeDataProvider) {
 		this.treeProvider = treeProvider;
+	}
 
+	initialize() {
 		const gitExtension =
 			vscode.extensions.getExtension<GitExtension>("vscode.git");
 		if (gitExtension) {
-			// 如果 Git 扩展已经激活，则直接初始化
 			if (gitExtension.isActive) {
 				const gitAPI = gitExtension.exports.getAPI(1);
 				this._repo = gitAPI.repositories[0];
 				this.initializeBranchListener();
 			} else {
-				// 否则，在 Git 扩展激活后再初始化
 				gitExtension.activate().then(() => {
 					const gitAPI = gitExtension.exports.getAPI(1);
 					gitAPI.onDidOpenRepository(() => {
@@ -28,7 +28,6 @@ export class GitBranchManager {
 				});
 			}
 		} else {
-			// 处理 Git 扩展未安装的情况
 			vscode.window.showErrorMessage(
 				"Git extension is not installed. Please install it to use this feature.",
 			);

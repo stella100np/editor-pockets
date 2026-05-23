@@ -50,12 +50,12 @@
 			],
 			"view/item/context": [
 				{
-					"command": "extension.openPocket",
+					"command": "editor-pockets.openPocket",
 					"group": "inline@1",
 					"when": "view == EditorPockets && viewItem == pocket"
 				},
 				{
-					"command": "extension.renamePocket",
+					"command": "editor-pockets.renamePocket",
 					"group": "inline@2",
 					"when": "view == EditorPockets && viewItem == pocket"
 				},
@@ -65,16 +65,16 @@
 					"when": "view == EditorPockets"
 				},
 				{
-					"command": "extension.linkBranch",
+					"command": "editor-pockets.linkBranch",
 					"group": "inline@4",
 					"when": "view == EditorPockets && viewItem == pocket && gitOpenRepositoryCount >= 1"
 				},
 				{
-					"command": "extension.unlinkBranch",
+					"command": "editor-pockets.unlinkBranch",
 					"when": "view == EditorPockets && viewItem == pocket "
 				},
 				{
-					"command": "extension.togglePocketSetting",
+					"command": "editor-pockets.togglePocketSetting",
 					"when": "view == EditorPockets && viewItem == pocket"
 				}
 			]
@@ -145,7 +145,7 @@
 				}
 			},
 			{
-				"command": "extension.renamePocket",
+				"command": "editor-pockets.renamePocket",
 				"title": "%extension.renamePocket.title%",
 				"category": "EditorPockets",
 				"icon": {
@@ -163,7 +163,7 @@
 				}
 			},
 			{
-				"command": "extension.openPocket",
+				"command": "editor-pockets.openPocket",
 				"title": "%extension.openPocket.title%",
 				"category": "EditorPockets",
 				"icon": {
@@ -172,7 +172,7 @@
 				}
 			},
 			{
-				"command": "extension.linkBranch",
+				"command": "editor-pockets.linkBranch",
 				"title": "%extension.linkBranch.title%",
 				"category": "EditorPockets",
 				"icon": {
@@ -181,7 +181,7 @@
 				}
 			},
 			{
-				"command": "extension.unlinkBranch",
+				"command": "editor-pockets.unlinkBranch",
 				"title": "%extension.unlinkBranch.title%",
 				"category": "EditorPockets",
 				"icon": {
@@ -190,7 +190,7 @@
 				}
 			},
 			{
-				"command": "extension.togglePocketSetting",
+				"command": "editor-pockets.togglePocketSetting",
 				"title": "%extension.togglePocketSetting.title%",
 				"category": "EditorPockets"
 			}
