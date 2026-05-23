@@ -10,5 +10,6 @@
 	"Will switching to this branch automatically close the other file editors?": "La bascule vers cette branche ferme-t-elle automatiquement les autres éditeurs de fichiers ?",
 	"yes": "oui",
 	"no": "non",
-	"Filter pockets by name...": "Filtrer les poches par nom..."
+	"Filter pockets by name...": "Filtrer les poches par nom...",
+	"Filter \"{0}\" — {1} matches": "Filtre \"{0}\" — {1} résultat(s)"
 }

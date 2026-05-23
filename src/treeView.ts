@@ -81,7 +81,7 @@ export class MyTreeDataProvider
 					.toLowerCase()
 					.includes(this._filterText.toLowerCase()),
 			).length;
-			this._view.title = `🔍 ${this._filterText} (${matchCount}) - ${this._originalViewTitle}`;
+			this._view.title = vscode.l10n.t('Filter "{0}" — {1} matches', this._filterText, matchCount);
 		} else {
 			this._view.title = this._originalViewTitle;
 		}

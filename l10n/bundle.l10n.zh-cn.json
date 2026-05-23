@@ -10,5 +10,6 @@
 	"Will switching to this branch automatically close the other file editors?": "切换到该分支时，是否自动关闭其他文件编辑器",
 	"yes": "是",
 	"no": "否",
-	"Filter pockets by name...": "按名称筛选口袋..."
+	"Filter pockets by name...": "按名称筛选口袋...",
+	"Filter \"{0}\" — {1} matches": "筛选\"{0}\" — {1} 个匹配"
 }
