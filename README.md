@@ -9,7 +9,9 @@
 - **保存文件组**：将当前打开的文件保存为"口袋"，方便后续快速访问
 - **快速恢复**：一键打开保存的文件组，恢复之前的工作状态
 - **Git 分支绑定**：将口袋与 Git 分支关联，切换分支时自动打开对应的文件组
+- **口袋筛选**：通过视图标题栏的 🔍 按钮快速搜索筛选口袋
 - **拖拽操作**：支持直接拖拽文件到口袋中进行保存和管理
+- **自动关闭控制**：可为每个口袋独立设置是否在打开时自动关闭其他编辑器
 - **多国语言支持**：支持中文、英文、法文等多种语言界面
 
 ## 📦 安装
@@ -51,6 +53,7 @@
 - `Editor Pockets: Open Pocket` - 打开口袋中的文件
 - `Editor Pockets: Rename Pocket` - 重命名口袋
 - `Editor Pockets: Remove Pocket` - 删除口袋
+- `Editor Pockets: Filter Pockets` - 按名称搜索筛选口袋
 - `Editor Pockets: Link Branch` - 将口袋与 Git 分支关联
 - `Editor Pockets: Unlink Branch` - 解除口袋与分支的关联
 - `Editor Pockets: Toggle Auto Close Others` - 切换是否在打开口袋时自动关闭其他编辑器
@@ -63,8 +66,7 @@
 
 扩展提供以下设置（在设置中搜索 "Editor Pockets"）：
 
-- `editorPockets.autoCloseOthers`：打开口袋时是否自动关闭其他编辑器（默认：false）
-- `editorPockets.defaultPocketName`：新口袋的默认名称格式
+- `editorPockets.autoCloseOthers`：打开口袋时是否自动关闭其他编辑器（默认：false，可在单个口袋上通过右键菜单单独切换）
 
 ## 🤝 贡献
 

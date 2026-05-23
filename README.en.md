@@ -9,7 +9,9 @@
 - **Save File Groups**: Save currently open files as "pockets" for quick access later
 - **Quick Restore**: One-click opening of saved file groups to restore previous work states
 - **Git Branch Binding**: Associate pockets with Git branches to automatically open corresponding file groups when switching branches
+- **Pocket Filtering**: Quickly search and filter pockets using the 🔍 button in the view title bar
 - **Drag & Drop**: Support dragging files directly into pockets for saving and management
+- **Auto-Close Control**: Individually toggle whether to auto-close other editors per-pocket via context menu
 - **Multi-language Support**: Interface available in Chinese, English, French and more
 
 ## 📦 Installation
@@ -51,6 +53,7 @@ Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac) to open the command 
 - `Editor Pockets: Open Pocket` - Open files in a pocket
 - `Editor Pockets: Rename Pocket` - Rename a pocket
 - `Editor Pockets: Remove Pocket` - Delete a pocket
+- `Editor Pockets: Filter Pockets` - Search and filter pockets by name
 - `Editor Pockets: Link Branch` - Associate a pocket with a Git branch
 - `Editor Pockets: Unlink Branch` - Remove branch association from a pocket
 - `Editor Pockets: Toggle Auto Close Others` - Toggle whether to automatically close other editors when opening a pocket
@@ -63,8 +66,7 @@ Right-click on a pocket in the Editor Pockets view to access all operation comma
 
 The extension provides the following settings (search "Editor Pockets" in settings):
 
-- `editorPockets.autoCloseOthers`: Whether to automatically close other editors when opening a pocket (default: false)
-- `editorPockets.defaultPocketName`: Default naming format for new pockets
+- `editorPockets.autoCloseOthers`: Whether to automatically close other editors when opening a pocket (default: false, can be toggled per-pocket via right-click context menu)
 
 ## 🤝 Contributing
 
