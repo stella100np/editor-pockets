@@ -77,6 +77,11 @@ export function unlinkBranch(treeProvider: MyTreeDataProvider) {
 	};
 }
 
+// 筛选口袋
+export function filterPockets(treeProvider: MyTreeDataProvider) {
+	return () => treeProvider.filterPockets();
+}
+
 // 切换口袋设置（自动关闭其他编辑器）
 export function togglePocketSetting(treeProvider: MyTreeDataProvider) {
 	return async (targetItem: PocketNode | undefined) => {

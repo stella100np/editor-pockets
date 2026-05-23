@@ -9,5 +9,6 @@
 	"Group {0}": "组 {0}",
 	"Will switching to this branch automatically close the other file editors?": "切换到该分支时，是否自动关闭其他文件编辑器",
 	"yes": "是",
-	"no": "否"
+	"no": "否",
+	"Filter pockets by name...": "按名称筛选口袋..."
 }

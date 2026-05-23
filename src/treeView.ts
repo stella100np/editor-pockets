@@ -18,6 +18,9 @@ export class MyTreeDataProvider
 	readonly onDidChangeTreeData: vscode.Event<BaseTreeNode | undefined> =
 		this._onDidChangeTreeData.event;
 	private _workspaceState: vscode.Memento;
+	private _filterText = "";
+	private _view: vscode.TreeView<BaseTreeNode>;
+	private _originalViewTitle = "Editor Pockets";
 
 	dropMimeTypes = ["application/vnd.code.tree.editorpockets"];
 	dragMimeTypes = ["application/vnd.code.tree.editorpockets"];
@@ -30,6 +33,8 @@ export class MyTreeDataProvider
 			dragAndDropController: this,
 		});
 		ctx.subscriptions.push(view);
+		this._view = view;
+		this._originalViewTitle = view.title ?? "Editor Pockets";
 		this._workspaceState = ctx.workspaceState;
 		const storedData = this._workspaceState.get(WORKSPACESTATE_KEY, []);
 		this.treeData = deserializePockets(storedData);
@@ -50,6 +55,14 @@ export class MyTreeDataProvider
 
 	getChildren(element?: BaseTreeNode): Thenable<BaseTreeNode[]> {
 		if (!element) {
+			if (this._filterText) {
+				const lowerFilter = this._filterText.toLowerCase();
+				return Promise.resolve(
+					this.treeData.filter((pocket) =>
+						pocket.label.toLowerCase().includes(lowerFilter),
+					),
+				);
+			}
 			return Promise.resolve(this.treeData);
 		}
 		return Promise.resolve(element.children);
@@ -59,6 +72,32 @@ export class MyTreeDataProvider
 		this._onDidChangeTreeData.fire(undefined);
 		const serializedData = serializePockets(this.treeData);
 		this._workspaceState.update(WORKSPACESTATE_KEY, serializedData);
+	}
+
+	private _updateFilterDisplay() {
+		if (this._filterText) {
+			const matchCount = this.treeData.filter((pocket) =>
+				pocket.label
+					.toLowerCase()
+					.includes(this._filterText.toLowerCase()),
+			).length;
+			this._view.title = `🔍 ${this._filterText} (${matchCount}) - ${this._originalViewTitle}`;
+		} else {
+			this._view.title = this._originalViewTitle;
+		}
+	}
+
+	async filterPockets() {
+		const value = await vscode.window.showInputBox({
+			placeHolder: vscode.l10n.t("Filter pockets by name..."),
+			value: this._filterText,
+		});
+
+		if (value !== undefined) {
+			this._filterText = value;
+			this._updateFilterDisplay();
+			this.refresh();
+		}
 	}
 
 	public async addPocket() {

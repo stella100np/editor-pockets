@@ -29,12 +29,7 @@
 				}
 			]
 		},
-		"viewsWelcome": [
-			{
-				"view": "EditorPockets",
-				"contents": "[Add Pocket](command:editor-pockets.addPocket)"
-			}
-		],
+			"viewsWelcome": [],
 		"menus": {
 			"editor/title": [
 				{
@@ -42,6 +37,11 @@
 				}
 			],
 			"view/title": [
+				{
+					"command": "editor-pockets.filterPockets",
+					"when": "view == EditorPockets",
+					"group": "navigation"
+				},
 				{
 					"command": "editor-pockets.addPocket",
 					"when": "view == EditorPockets",
@@ -193,6 +193,12 @@
 				"command": "editor-pockets.togglePocketSetting",
 				"title": "%extension.togglePocketSetting.title%",
 				"category": "EditorPockets"
+			},
+			{
+				"command": "editor-pockets.filterPockets",
+				"title": "%extension.filterPockets.title%",
+				"category": "EditorPockets",
+				"icon": "$(search)"
 			}
 		]
 	},

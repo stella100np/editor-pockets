@@ -2,6 +2,7 @@
 import * as vscode from "vscode";
 import {
 	addPocket,
+	filterPockets,
 	linkBranch,
 	openPocket,
 	removePocket,
@@ -20,6 +21,10 @@ export function activate(context: vscode.ExtensionContext) {
 	gitBranchManager.initialize();
 
 	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			"editor-pockets.filterPockets",
+			filterPockets(treeProvider),
+		),
 		vscode.commands.registerCommand(
 			"editor-pockets.addPocket",
 			addPocket(treeProvider),

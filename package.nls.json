@@ -7,6 +7,7 @@
 	"extension.linkBranch.title": " Related to a branch...",
 	"extension.unlinkBranch.title": " Unlink branch",
 	"extension.togglePocketSetting.title": "Close/Keep previous editor on switch",
+	"extension.filterPockets.title": "Filter Pockets",
 	"editor_pockets": "Editor Pockets",
 	"walkthrough.title": "Getting Started with Editor Pockets",
 	"walkthrough.description": "Learn how to use Editor Pockets to manage your workspace efficiently",
