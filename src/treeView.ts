@@ -77,11 +77,13 @@ export class MyTreeDataProvider
 	private _updateFilterDisplay() {
 		if (this._filterText) {
 			const matchCount = this.treeData.filter((pocket) =>
-				pocket.label
-					.toLowerCase()
-					.includes(this._filterText.toLowerCase()),
+				pocket.label.toLowerCase().includes(this._filterText.toLowerCase()),
 			).length;
-			this._view.title = vscode.l10n.t('Filter "{0}" — {1} matches', this._filterText, matchCount);
+			this._view.title = vscode.l10n.t(
+				'Filter "{0}" — {1} matches',
+				this._filterText,
+				matchCount,
+			);
 		} else {
 			this._view.title = this._originalViewTitle;
 		}
@@ -238,10 +240,7 @@ export class MyTreeDataProvider
 						targetGroup,
 					);
 				} else if (child instanceof DocNode) {
-					await openFilesInGroup(
-						[child.resourceUri],
-						targetGroup,
-					);
+					await openFilesInGroup([child.resourceUri], targetGroup);
 				}
 				targetGroup = vscode.ViewColumn.Beside;
 			}
@@ -255,9 +254,7 @@ export class MyTreeDataProvider
 	// 导出口袋数据为 JSON 文件
 	async exportPockets() {
 		if (this.treeData.length === 0) {
-			vscode.window.showInformationMessage(
-				vscode.l10n.t("No data to export."),
-			);
+			vscode.window.showInformationMessage(vscode.l10n.t("No data to export."));
 			return;
 		}
 		const defaultName = `editor-pockets-${new Date()
@@ -290,10 +287,7 @@ export class MyTreeDataProvider
 			);
 		} catch (error) {
 			vscode.window.showErrorMessage(
-				vscode.l10n.t(
-					"Failed to export data: {0}",
-					(error as Error).message,
-				),
+				vscode.l10n.t("Failed to export data: {0}", (error as Error).message),
 			);
 		}
 	}
@@ -322,10 +316,7 @@ export class MyTreeDataProvider
 			pocketsData = raw;
 		} catch (error) {
 			vscode.window.showErrorMessage(
-				vscode.l10n.t(
-					"Failed to import data: {0}",
-					(error as Error).message,
-				),
+				vscode.l10n.t("Failed to import data: {0}", (error as Error).message),
 			);
 			return;
 		}
@@ -338,15 +329,11 @@ export class MyTreeDataProvider
 				[
 					{
 						label: mergeLabel,
-						description: vscode.l10n.t(
-							"Append imported data to current data",
-						),
+						description: vscode.l10n.t("Append imported data to current data"),
 					},
 					{
 						label: replaceLabel,
-						description: vscode.l10n.t(
-							"Discard current data, then import",
-						),
+						description: vscode.l10n.t("Discard current data, then import"),
 					},
 				],
 				{ placeHolder: vscode.l10n.t("How to import?") },
@@ -361,7 +348,7 @@ export class MyTreeDataProvider
 		if (mode === "merge") {
 			for (const p of pocketsData as Array<Record<string, unknown>>) {
 				if (p && typeof p === "object") {
-					delete p.id;
+					p.id = undefined;
 				}
 			}
 		}
