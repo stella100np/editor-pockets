@@ -11,5 +11,17 @@
 	"yes": "oui",
 	"no": "non",
 	"Filter pockets by name...": "Filtrer les poches par nom...",
-	"Filter \"{0}\" — {1} matches": "Filtre \"{0}\" — {1} résultat(s)"
+	"Filter \"{0}\" — {1} matches": "Filtre \"{0}\" — {1} résultat(s)",
+	"Export": "Exporter",
+	"Import": "Importer",
+	"No data to export.": "Aucune donnée à exporter.",
+	"Data exported to {0}": "Données exportées vers {0}",
+	"Failed to export data: {0}": "Échec de l'exportation des données : {0}",
+	"Failed to import data: {0}": "Échec de l'importation des données : {0}",
+	"How to import?": "Comment importer ?",
+	"Merge with existing data": "Fusionner avec les données existantes",
+	"Replace existing data": "Remplacer les données existantes",
+	"Append imported data to current data": "Ajouter les données importées aux données actuelles",
+	"Discard current data, then import": "Supprimer les données actuelles, puis importer",
+	"Data imported successfully.": "Données importées avec succès."
 }

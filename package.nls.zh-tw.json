@@ -8,6 +8,8 @@
 	"extension.unlinkBranch.title": "取消關聯分支",
 	"extension.togglePocketSetting.title": "切換時關閉/保持先前的編輯器",
 	"extension.filterPockets.title": "篩選口袋",
+	"extension.exportPockets.title": "匯出資料到 JSON…",
+	"extension.importPockets.title": "從 JSON 匯入資料…",
 	"walkthrough.title": "編輯器口袋入門指南",
 	"walkthrough.description": "學習如何使用編輯器口袋高效管理您的工作區",
 	"walkthrough.addPocket.title": "建立第一個口袋",

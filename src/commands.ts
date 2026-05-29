@@ -92,3 +92,13 @@ export function togglePocketSetting(treeProvider: MyTreeDataProvider) {
 		}
 	};
 }
+
+// 导出口袋为 JSON
+export function exportPockets(treeProvider: MyTreeDataProvider) {
+	return () => treeProvider.exportPockets();
+}
+
+// 从 JSON 导入口袋
+export function importPockets(treeProvider: MyTreeDataProvider) {
+	return () => treeProvider.importPockets();
+}

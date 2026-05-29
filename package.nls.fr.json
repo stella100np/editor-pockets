@@ -8,6 +8,8 @@
 	"extension.unlinkBranch.title": "Délier la branche",
 	"extension.togglePocketSetting.title": "Fermer les autres éditeurs lors du changement",
 	"extension.filterPockets.title": "Filtrer les poches",
+	"extension.exportPockets.title": "Exporter les données en JSON…",
+	"extension.importPockets.title": "Importer les données depuis JSON…",
 	"walkthrough.title": "Premiers pas avec Editor Pockets",
 	"walkthrough.description": "Apprenez à utiliser Editor Pockets pour gérer efficacement votre espace de travail",
 	"walkthrough.addPocket.title": "Créer votre première poche",

@@ -11,5 +11,17 @@
 	"yes": "是",
 	"no": "否",
 	"Filter pockets by name...": "按名称筛选口袋...",
-	"Filter \"{0}\" — {1} matches": "筛选\"{0}\" — {1} 个匹配"
+	"Filter \"{0}\" — {1} matches": "筛选\"{0}\" — {1} 个匹配",
+	"Export": "导出",
+	"Import": "导入",
+	"No data to export.": "没有可导出的数据。",
+	"Data exported to {0}": "数据已导出到 {0}",
+	"Failed to export data: {0}": "导出数据失败：{0}",
+	"Failed to import data: {0}": "导入数据失败：{0}",
+	"How to import?": "如何导入？",
+	"Merge with existing data": "与现有数据合并",
+	"Replace existing data": "替换现有数据",
+	"Append imported data to current data": "将导入的数据追加到当前数据之后",
+	"Discard current data, then import": "丢弃当前数据后再导入",
+	"Data imported successfully.": "数据导入成功。"
 }

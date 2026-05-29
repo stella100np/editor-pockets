@@ -11,5 +11,17 @@
 	"yes": "是",
 	"no": "否",
 	"Filter pockets by name...": "按名稱篩選口袋...",
-	"Filter \"{0}\" — {1} matches": "篩選\"{0}\" — {1} 個匹配"
+	"Filter \"{0}\" — {1} matches": "篩選\"{0}\" — {1} 個匹配",
+	"Export": "匯出",
+	"Import": "匯入",
+	"No data to export.": "沒有可匯出的資料。",
+	"Data exported to {0}": "資料已匯出到 {0}",
+	"Failed to export data: {0}": "匯出資料失敗：{0}",
+	"Failed to import data: {0}": "匯入資料失敗：{0}",
+	"How to import?": "如何匯入？",
+	"Merge with existing data": "與現有資料合併",
+	"Replace existing data": "取代現有資料",
+	"Append imported data to current data": "將匯入的資料追加到目前資料之後",
+	"Discard current data, then import": "捨棄目前資料後再匯入",
+	"Data imported successfully.": "資料匯入成功。"
 }

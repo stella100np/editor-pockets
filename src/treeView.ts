@@ -252,6 +252,132 @@ export class MyTreeDataProvider
 		return this.treeData.find((v) => v.branch === branchName);
 	}
 
+	// 导出口袋数据为 JSON 文件
+	async exportPockets() {
+		if (this.treeData.length === 0) {
+			vscode.window.showInformationMessage(
+				vscode.l10n.t("No data to export."),
+			);
+			return;
+		}
+		const defaultName = `editor-pockets-${new Date()
+			.toISOString()
+			.slice(0, 10)}.json`;
+		const defaultUri = vscode.workspace.workspaceFolders?.[0]
+			? vscode.Uri.joinPath(
+					vscode.workspace.workspaceFolders[0].uri,
+					defaultName,
+				)
+			: vscode.Uri.file(defaultName);
+		const targetUri = await vscode.window.showSaveDialog({
+			defaultUri,
+			filters: { JSON: ["json"] },
+			saveLabel: vscode.l10n.t("Export"),
+		});
+		if (!targetUri) {
+			return;
+		}
+		const payload = {
+			version: 1,
+			exportedAt: new Date().toISOString(),
+			pockets: serializePockets(this.treeData),
+		};
+		try {
+			const bytes = new TextEncoder().encode(JSON.stringify(payload, null, 2));
+			await vscode.workspace.fs.writeFile(targetUri, bytes);
+			vscode.window.showInformationMessage(
+				vscode.l10n.t("Data exported to {0}", targetUri.fsPath),
+			);
+		} catch (error) {
+			vscode.window.showErrorMessage(
+				vscode.l10n.t(
+					"Failed to export data: {0}",
+					(error as Error).message,
+				),
+			);
+		}
+	}
+
+	// 从 JSON 文件导入口袋数据
+	async importPockets() {
+		const defaultUri = vscode.workspace.workspaceFolders?.[0]?.uri;
+		const pickedUris = await vscode.window.showOpenDialog({
+			canSelectMany: false,
+			defaultUri,
+			filters: { JSON: ["json"] },
+			openLabel: vscode.l10n.t("Import"),
+		});
+		if (!pickedUris || pickedUris.length === 0) {
+			return;
+		}
+		let pocketsData: unknown[];
+		try {
+			const bytes = await vscode.workspace.fs.readFile(pickedUris[0]);
+			const parsed = JSON.parse(new TextDecoder().decode(bytes));
+			// 兼容两种格式：直接数组、或 { pockets: [...] }
+			const raw = Array.isArray(parsed) ? parsed : parsed?.pockets;
+			if (!Array.isArray(raw)) {
+				throw new Error("missing pockets array");
+			}
+			pocketsData = raw;
+		} catch (error) {
+			vscode.window.showErrorMessage(
+				vscode.l10n.t(
+					"Failed to import data: {0}",
+					(error as Error).message,
+				),
+			);
+			return;
+		}
+
+		let mode: "merge" | "replace" = "merge";
+		if (this.treeData.length > 0) {
+			const mergeLabel = vscode.l10n.t("Merge with existing data");
+			const replaceLabel = vscode.l10n.t("Replace existing data");
+			const choice = await vscode.window.showQuickPick(
+				[
+					{
+						label: mergeLabel,
+						description: vscode.l10n.t(
+							"Append imported data to current data",
+						),
+					},
+					{
+						label: replaceLabel,
+						description: vscode.l10n.t(
+							"Discard current data, then import",
+						),
+					},
+				],
+				{ placeHolder: vscode.l10n.t("How to import?") },
+			);
+			if (!choice) {
+				return;
+			}
+			mode = choice.label === replaceLabel ? "replace" : "merge";
+		}
+
+		// 合并模式下清除旧 id，让 deserializePockets 内的构造函数生成新的，避免冲突
+		if (mode === "merge") {
+			for (const p of pocketsData as Array<Record<string, unknown>>) {
+				if (p && typeof p === "object") {
+					delete p.id;
+				}
+			}
+		}
+
+		const imported = deserializePockets(pocketsData as PocketNode[]);
+		if (mode === "replace") {
+			this.treeData = imported;
+		} else {
+			this.treeData.push(...imported);
+		}
+		this.refresh();
+		vscode.window.showInformationMessage(
+			vscode.l10n.t("Data imported successfully."),
+		);
+	}
+
 	getParent(element: BaseTreeNode): BaseTreeNode | undefined {
 		return this._getParent(element);
 	}

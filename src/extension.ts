@@ -2,7 +2,9 @@
 import * as vscode from "vscode";
 import {
 	addPocket,
+	exportPockets,
 	filterPockets,
+	importPockets,
 	linkBranch,
 	openPocket,
 	removePocket,
@@ -56,6 +58,14 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(
 			"editor-pockets.togglePocketSetting",
 			togglePocketSetting(treeProvider),
+		),
+		vscode.commands.registerCommand(
+			"editor-pockets.exportPockets",
+			exportPockets(treeProvider),
+		),
+		vscode.commands.registerCommand(
+			"editor-pockets.importPockets",
+			importPockets(treeProvider),
 		),
 	);
 }

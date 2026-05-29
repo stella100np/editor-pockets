@@ -46,6 +46,16 @@
 					"command": "editor-pockets.addPocket",
 					"when": "view == EditorPockets",
 					"group": "navigation"
+				},
+				{
+					"command": "editor-pockets.exportPockets",
+					"when": "view == EditorPockets",
+					"group": "1_io@1"
+				},
+				{
+					"command": "editor-pockets.importPockets",
+					"when": "view == EditorPockets",
+					"group": "1_io@2"
 				}
 			],
 			"view/item/context": [
@@ -199,6 +209,18 @@
 				"title": "%extension.filterPockets.title%",
 				"category": "EditorPockets",
 				"icon": "$(search)"
+			},
+			{
+				"command": "editor-pockets.exportPockets",
+				"title": "%extension.exportPockets.title%",
+				"category": "EditorPockets",
+				"icon": "$(export)"
+			},
+			{
+				"command": "editor-pockets.importPockets",
+				"title": "%extension.importPockets.title%",
+				"category": "EditorPockets",
+				"icon": "$(import)"
 			}
 		]
 	},
