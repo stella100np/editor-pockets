@@ -201,6 +201,10 @@ export class MyTreeDataProvider
 		}
 
 		const docNode = new DocNode(uri);
+		const isDuplicate = (children: BaseTreeNode[]) =>
+			children.some(
+				(c) => c instanceof DocNode && c.resourceUri?.fsPath === uri.fsPath,
+			);
 
 		// 如果口袋下有分组，让用户选择放到哪个组
 		const groups = targetItem.children.filter(
@@ -222,14 +226,23 @@ export class MyTreeDataProvider
 			}
 			const directLabel = `$(add) ${vscode.l10n.t("Add directly to pocket")}`;
 			if (selected.label === directLabel) {
+				if (isDuplicate(targetItem.children)) {
+					return;
+				}
 				targetItem.children.push(docNode);
 			} else {
 				const targetGroup = groups.find((g) => g.label === selected.label);
 				if (targetGroup) {
+					if (isDuplicate(targetGroup.children)) {
+						return;
+					}
 					targetGroup.children.push(docNode);
 				}
 			}
 		} else {
+			if (isDuplicate(targetItem.children)) {
+				return;
+			}
 			targetItem.children.push(docNode);
 		}
 
