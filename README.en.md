@@ -11,6 +11,7 @@
 - **Git Branch Binding**: Associate pockets with Git branches to automatically open corresponding file groups when switching branches
 - **Pocket Filtering**: Quickly search and filter pockets using the 🔍 button in the view title bar
 - **Drag & Drop**: Support dragging files directly into pockets for saving and management
+- **Add File to Pocket**: Quickly add the current file into an existing pocket (or group) via the command palette or editor title context menu, with automatic de-duplication
 - **Auto-Close Control**: Individually toggle whether to auto-close other editors per-pocket via context menu
 - **Multi-language Support**: Interface available in Chinese, English, French and more
 
@@ -57,6 +58,7 @@ Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac) to open the command 
 - `Editor Pockets: Link Branch` - Associate a pocket with a Git branch
 - `Editor Pockets: Unlink Branch` - Remove branch association from a pocket
 - `Editor Pockets: Toggle Auto Close Others` - Toggle whether to automatically close other editors when opening a pocket
+- `Editor Pockets: Add File To Pocket` - Add a file (from the explorer, editor title menu, or the currently active editor) to a chosen pocket
 
 ### Context Menu Operations
 
@@ -67,6 +69,7 @@ Right-click on a pocket in the Editor Pockets view to access all operation comma
 The extension provides the following settings (search "Editor Pockets" in settings):
 
 - `editorPockets.autoCloseOthers`: Whether to automatically close other editors when opening a pocket (default: false, can be toggled per-pocket via right-click context menu)
+- `editorPockets.switchToPocketOnAdd`: Whether to automatically switch to and reveal the target pocket in the Editor Pockets view after adding a file to it (default: true)
 
 ## 🤝 Contributing
 
