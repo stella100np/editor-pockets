@@ -11,6 +11,7 @@
 	"extension.exportPockets.title": "Exporter les données en JSON…",
 	"extension.importPockets.title": "Importer les données depuis JSON…",
 	"extension.addFileToPocket.title": "Ajouter le fichier à une poche…",
+	"configuration.switchToPocketOnAdd.description": "Basculer vers la vue Editor Pockets après avoir ajouté un fichier ou enregistré des onglets dans une poche",
 	"walkthrough.title": "Premiers pas avec Editor Pockets",
 	"walkthrough.description": "Apprenez à enregistrer, restaurer et organiser des groupes de fichiers (poches) selon votre vraie façon de travailler",
 	"walkthrough.addPocket.title": "Créer votre première poche",

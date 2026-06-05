@@ -68,6 +68,16 @@ export class MyTreeDataProvider
 		return Promise.resolve(element.children);
 	}
 
+	private _shouldRevealOnAdd(): boolean {
+		return vscode.workspace.getConfiguration('editorPockets').get<boolean>('switchToPocketOnAdd', true);
+	}
+
+	private _revealIfConfigured(targetItem: BaseTreeNode) {
+		if (this._shouldRevealOnAdd()) {
+			this._view.reveal(targetItem, { expand: true });
+		}
+	}
+
 	refresh() {
 		this._onDidChangeTreeData.fire(undefined);
 		const serializedData = serializePockets(this.treeData);
@@ -180,7 +190,7 @@ export class MyTreeDataProvider
 				targetItem.children = result;
 			}
 			this.refresh();
-			this._view.reveal(targetItem, { expand: true });
+			this._revealIfConfigured(targetItem);
 		}
 	}
 
@@ -224,7 +234,7 @@ export class MyTreeDataProvider
 		}
 
 		this.refresh();
-		this._view.reveal(targetItem, { expand: true });
+		this._revealIfConfigured(targetItem);
 	}
 
 	remove(targetItem: BaseTreeNode) {

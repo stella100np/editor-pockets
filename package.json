@@ -21,6 +21,16 @@
 	"main": "./dist/extension.js",
 	"l10n": "./l10n",
 	"contributes": {
+		"configuration": {
+			"title": "Editor Pockets",
+			"properties": {
+				"editorPockets.switchToPocketOnAdd": {
+					"type": "boolean",
+					"default": true,
+					"description": "%configuration.switchToPocketOnAdd.description%"
+				}
+			}
+		},
 		"views": {
 			"explorer": [
 				{

@@ -11,6 +11,7 @@
 	"extension.exportPockets.title": "Export Data to JSON...",
 	"extension.importPockets.title": "Import Data from JSON...",
 	"extension.addFileToPocket.title": "Add File to Pocket...",
+	"configuration.switchToPocketOnAdd.description": "Switch focus to the Editor Pockets view after adding a file or saving tabs to a pocket",
 	"editor_pockets": "Editor Pockets",
 	"walkthrough.title": "Getting Started with Editor Pockets",
 	"walkthrough.description": "Learn how to save, restore and organize groups of files (pockets) for the way you actually work",
