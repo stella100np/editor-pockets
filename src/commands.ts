@@ -93,6 +93,20 @@ export function togglePocketSetting(treeProvider: MyTreeDataProvider) {
 	};
 }
 
+// 添加文件到口袋
+export function addFileToPocket(treeProvider: MyTreeDataProvider) {
+	return (uri: vscode.Uri) => {
+		if (uri) {
+			treeProvider.addFileToPocket(uri);
+		} else {
+			const activeEditor = vscode.window.activeTextEditor;
+			if (activeEditor) {
+				treeProvider.addFileToPocket(activeEditor.document.uri);
+			}
+		}
+	};
+}
+
 // 导出口袋为 JSON
 export function exportPockets(treeProvider: MyTreeDataProvider) {
 	return () => treeProvider.exportPockets();

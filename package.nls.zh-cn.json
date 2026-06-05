@@ -10,6 +10,7 @@
 	"extension.filterPockets.title": "筛选口袋",
 	"extension.exportPockets.title": "导出数据到 JSON…",
 	"extension.importPockets.title": "从 JSON 导入数据…",
+	"extension.addFileToPocket.title": "添加文件到口袋…",
 	"walkthrough.title": "编辑器口袋入门",
 	"walkthrough.description": "学习如何保存、恢复并组织文件组（口袋），按你的实际工作方式管理工作区",
 	"walkthrough.addPocket.title": "创建第一个口袋",

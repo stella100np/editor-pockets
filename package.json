@@ -36,6 +36,12 @@
 					"command": "editor-pockets.saveTabs"
 				}
 			],
+			"editor/title/context": [
+				{
+					"command": "editor-pockets.addFileToPocket",
+					"group": "2_pocket"
+				}
+			],
 			"view/title": [
 				{
 					"command": "editor-pockets.filterPockets",
@@ -238,6 +244,12 @@
 				"title": "%extension.importPockets.title%",
 				"category": "EditorPockets",
 				"icon": "$(import)"
+			},
+			{
+				"command": "editor-pockets.addFileToPocket",
+				"title": "%extension.addFileToPocket.title%",
+				"category": "EditorPockets",
+				"icon": "$(add)"
 			}
 		]
 	},

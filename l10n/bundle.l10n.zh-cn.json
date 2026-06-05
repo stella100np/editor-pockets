@@ -23,5 +23,7 @@
 	"Replace existing data": "替换现有数据",
 	"Append imported data to current data": "将导入的数据追加到当前数据之后",
 	"Discard current data, then import": "丢弃当前数据后再导入",
-	"Data imported successfully.": "数据导入成功。"
+	"Data imported successfully.": "数据导入成功。",
+	"Add directly to pocket": "直接添加到口袋",
+	"Choose a group to add the file to": "选择要将文件添加到哪个组"
 }

@@ -184,6 +184,49 @@ export class MyTreeDataProvider
 		}
 	}
 
+	async addFileToPocket(uri: vscode.Uri) {
+		const targetItem = await this.checkNode();
+		if (!targetItem) {
+			return;
+		}
+
+		const docNode = new DocNode(uri);
+
+		// 如果口袋下有分组，让用户选择放到哪个组
+		const groups = targetItem.children.filter(
+			(c): c is EditorGroupNode => c instanceof EditorGroupNode,
+		);
+		if (groups.length > 0) {
+			const groupItems: vscode.QuickPickItem[] = [
+				{
+					label: `$(add) ${vscode.l10n.t("Add directly to pocket")}`,
+				},
+				{ label: "", kind: vscode.QuickPickItemKind.Separator },
+				...groups.map((g) => ({ label: g.label as string })),
+			];
+			const selected = await vscode.window.showQuickPick(groupItems, {
+				placeHolder: vscode.l10n.t("Choose a group to add the file to"),
+			});
+			if (!selected) {
+				return;
+			}
+			const directLabel = `$(add) ${vscode.l10n.t("Add directly to pocket")}`;
+			if (selected.label === directLabel) {
+				targetItem.children.push(docNode);
+			} else {
+				const targetGroup = groups.find((g) => g.label === selected.label);
+				if (targetGroup) {
+					targetGroup.children.push(docNode);
+				}
+			}
+		} else {
+			targetItem.children.push(docNode);
+		}
+
+		this.refresh();
+		this._view.reveal(targetItem, { expand: true });
+	}
+
 	remove(targetItem: BaseTreeNode) {
 		if (!targetItem.id) {
 			return;

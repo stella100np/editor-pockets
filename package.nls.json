@@ -10,6 +10,7 @@
 	"extension.filterPockets.title": "Filter Pockets",
 	"extension.exportPockets.title": "Export Data to JSON...",
 	"extension.importPockets.title": "Import Data from JSON...",
+	"extension.addFileToPocket.title": "Add File to Pocket...",
 	"editor_pockets": "Editor Pockets",
 	"walkthrough.title": "Getting Started with Editor Pockets",
 	"walkthrough.description": "Learn how to save, restore and organize groups of files (pockets) for the way you actually work",

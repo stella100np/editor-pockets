@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 import * as vscode from "vscode";
 import {
+	addFileToPocket,
 	addPocket,
 	exportPockets,
 	filterPockets,
@@ -66,6 +67,10 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand(
 			"editor-pockets.importPockets",
 			importPockets(treeProvider),
+		),
+		vscode.commands.registerCommand(
+			"editor-pockets.addFileToPocket",
+			addFileToPocket(treeProvider),
 		),
 	);
 }

@@ -23,5 +23,7 @@
 	"Replace existing data": "Remplacer les données existantes",
 	"Append imported data to current data": "Ajouter les données importées aux données actuelles",
 	"Discard current data, then import": "Supprimer les données actuelles, puis importer",
-	"Data imported successfully.": "Données importées avec succès."
+	"Data imported successfully.": "Données importées avec succès.",
+	"Add directly to pocket": "Ajouter directement à la poche",
+	"Choose a group to add the file to": "Choisissez un groupe pour ajouter le fichier"
 }
